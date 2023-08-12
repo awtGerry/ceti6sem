@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">Diagnostico</string>
+    <string name="menu_register">Registrar producto</string>
+    <string name="menu_show">Ver productos</string>
+    <string name="text_login">Iniciar sesion</string>
+    <string name="text_welcome">Bienvenido!</string>
+    <string name="text_register">Registro de datos</string>
+    <string name="text_gender">Genero:</string>
+    <string name="text_male">Hombre</string>
+    <string name="text_female">Mujer</string>
+    <string name="text_other">Otro</string>
+    <string name="hint_username">Inserte nombre de usuario</string>
+    <string name="hint_password">Inserte contrasena</string>
+    <string name="hint_name">Inserte su nombre</string>
+    <string name="button_login">Ingresar</string>
+    <string name="button_register">Registrar datos</string>
+    <string name="button_back">Regresar</string>
+</resources>
