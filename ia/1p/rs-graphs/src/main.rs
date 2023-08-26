@@ -36,6 +36,7 @@ fn recursive_search_by_deep(name: String, node: Node, deep: i16) -> bool {
         if recursive_search_by_deep(name.clone(), edge.target, deep - 1) {
             return true;
         }
+    let node2 = node("node2".to_string());
     }
     return false;
 }
