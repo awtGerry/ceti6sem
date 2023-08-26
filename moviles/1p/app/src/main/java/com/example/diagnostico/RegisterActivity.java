@@ -2,10 +2,14 @@ package com.example.diagnostico;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RadioButton;
+import android.widget.Toast;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -23,7 +27,6 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     public void register(View view) {
-        Person person = new Person();
         String selection;
         if (male.isSelected()) {
             selection = "Hombre";
@@ -32,7 +35,16 @@ public class RegisterActivity extends AppCompatActivity {
         } else {
             selection = "Otro";
         }
-        person.setName(name.getText().toString());
-        person.setGender(selection);
+        SharedPreferences data = getSharedPreferences("data", MODE_PRIVATE);
+        SharedPreferences.Editor editor = data.edit();
+        editor.putString("data.name", name.getText().toString());
+        editor.putString("data.gender", selection);
+        editor.commit();
+        Toast.makeText(this, "Datos registrados.", Toast.LENGTH_SHORT).show();
+    }
+
+    public void go_back(View view) {
+        Intent intent = new Intent(this, MenuActivity.class);
+        startActivity(intent);
     }
 }

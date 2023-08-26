@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">notificaciones</string>
+    <string name="text_login">Inicia sesion</string>
+    <string name="text_logout">Cerrar sesion</string>
+    <string name="text_register_patient">Ingresar paciente</string>
+    <string name="text_emergencies">Registrar paciente en urgencias</string>
+    <string name="text_patient_room">Cuarto:</string>
+    <string name="text_patient_need">Especialista necesitado:</string>
+    <string name="text_form">Registrar paciente</string>
+    <string name="hint_username">Nombre de usuario</string>
+    <string name="hint_password">Contraseña</string>
+    <string name="hint_doctor_name">Nombre del doctor</string>
+    <string name="hint_patient_name">Nombre del paciente</string>
+    <string name="hint_patient_lastname">Apellidos del paciente</string>
+    <string name="hint_patient_age">Edad del paciente</string>
+    <string name="hint_date">Fecha de visita</string>
+</resources>

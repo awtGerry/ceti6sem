@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -30,10 +31,12 @@ public class MenuActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_register:
-                Toast.makeText(this, "register", Toast.LENGTH_SHORT).show();
+                Intent register_intent = new Intent(this, RegisterActivity.class);
+                startActivity(register_intent);
                 return true;
             case R.id.menu_show:
-                Toast.makeText(this, "show", Toast.LENGTH_SHORT).show();
+                Intent show_intent = new Intent(this, ShowActivity.class);
+                startActivity(show_intent);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

@@ -1,7 +1,8 @@
 package com.example.diagnostico;
 
-public class Person {
+public class Persona {
     private String name, gender;
+    Persona() {}
 
     public String getName() {
         return name;

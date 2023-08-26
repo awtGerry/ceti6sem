@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".RegisterActivity">
+
+    <EditText
+        android:id="@+id/id_patient_name"
+        android:layout_width="280dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="32sp"
+        android:backgroundTint="@color/sky_400"
+        android:ems="10"
+        android:hint="@string/hint_patient_name"
+        android:inputType="text"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="Autofill" />
+
+    <EditText
+        android:id="@+id/id_patient_lastname"
+        android:layout_width="280dp"
+        android:layout_height="60dp"
+        android:backgroundTint="@color/sky_400"
+        android:ems="10"
+        android:hint="@string/hint_patient_lastname"
+        android:inputType="text"
+        android:layout_marginTop="8sp"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/id_patient_name"
+        tools:ignore="Autofill" />
+
+    <EditText
+        android:id="@+id/id_patient_age"
+        android:layout_width="280dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="8sp"
+        android:backgroundTint="@color/sky_400"
+        android:ems="10"
+        android:hint="@string/hint_patient_age"
+        android:inputType="number"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/id_patient_lastname"
+        tools:ignore="Autofill" />
+
+    <EditText
+        android:id="@+id/id_date"
+        android:layout_width="280dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="8sp"
+        android:backgroundTint="@color/sky_400"
+        android:ems="10"
+        android:hint="@string/hint_date"
+        android:inputType="text"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/id_patient_age"
+        tools:ignore="Autofill,TextFields" />
+
+    <EditText
+        android:layout_width="240dp"
+        android:layout_height="54dp"
+        android:layout_marginTop="24sp"
+        android:background="@drawable/circle_fill"
+        android:editable="false"
+        android:onClick="registerPatient"
+        android:text="@string/text_form"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/id_date"
+        tools:ignore="Autofill,TextFields" />
+</androidx.constraintlayout.widget.ConstraintLayout>

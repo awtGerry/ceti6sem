@@ -20,8 +20,8 @@
 
     <EditText
         android:id="@+id/id_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="280dp"
+        android:layout_height="48sp"
         android:ems="10"
         android:inputType="textPersonName"
         android:hint="@string/hint_name"
@@ -35,11 +35,10 @@
         android:id="@+id/text_gender"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/text_gender"
         android:layout_marginTop="20sp"
+        android:text="@string/text_gender"
         android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/radioGroup"
         app:layout_constraintTop_toBottomOf="@+id/id_name" />
 
     <RadioGroup
@@ -76,6 +75,7 @@
         android:layout_height="wrap_content"
         android:backgroundTint="@color/black"
         android:text="@string/button_register"
+        android:onClick="register"
         android:layout_marginStart="32dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
@@ -87,6 +87,7 @@
         android:backgroundTint="@color/black"
         android:layout_marginStart="32dp"
         android:text="@string/button_back"
+        android:onClick="go_back"
         app:layout_constraintStart_toEndOf="@+id/id_button_register"
         app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
 

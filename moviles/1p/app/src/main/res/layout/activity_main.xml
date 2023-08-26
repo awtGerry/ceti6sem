@@ -36,6 +36,7 @@
         android:layout_height="50dp"
         android:hint="@string/hint_password"
         android:layout_marginTop="24sp"
+        android:inputType="textPassword"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.504"
         app:layout_constraintStart_toStartOf="parent"
