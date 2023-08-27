@@ -6,6 +6,7 @@
     <string name="text_emergencies">Registrar paciente en urgencias</string>
     <string name="text_patient_room">Cuarto:</string>
     <string name="text_patient_need">Especialista necesitado:</string>
+    <string name="text_cita">Realizar cita</string>
     <string name="text_form">Registrar paciente</string>
     <string name="hint_username">Nombre de usuario</string>
     <string name="hint_password">Contraseña</string>
@@ -13,5 +14,6 @@
     <string name="hint_patient_name">Nombre del paciente</string>
     <string name="hint_patient_lastname">Apellidos del paciente</string>
     <string name="hint_patient_age">Edad del paciente</string>
-    <string name="hint_date">Fecha de visita</string>
+    <string name="hint_date">Establecer fecha</string>
+    <string name="hint_time">Establecer hora</string>
 </resources>

@@ -54,20 +54,36 @@
         app:layout_constraintTop_toBottomOf="@+id/id_patient_lastname"
         tools:ignore="Autofill" />
 
-    <EditText
-        android:id="@+id/id_date"
+    <Button
+        android:id="@+id/button_date"
         android:layout_width="280dp"
         android:layout_height="60dp"
         android:layout_marginTop="8sp"
         android:backgroundTint="@color/sky_400"
         android:ems="10"
-        android:hint="@string/hint_date"
-        android:inputType="text"
+        android:text="@string/hint_date"
         android:textAlignment="center"
         android:textColor="@color/black"
+        android:onClick="setDateAlarm"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/id_patient_age"
+        tools:ignore="Autofill,TextFields" />
+
+    <Button
+        android:id="@+id/button_time"
+        android:layout_width="280dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="8sp"
+        android:backgroundTint="@color/sky_400"
+        android:ems="10"
+        android:text="@string/hint_time"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:onClick="setHourAlarm"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button_date"
         tools:ignore="Autofill,TextFields" />
 
     <EditText
@@ -82,6 +98,6 @@
         android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/id_date"
+        app:layout_constraintTop_toBottomOf="@+id/button_time"
         tools:ignore="Autofill,TextFields" />
 </androidx.constraintlayout.widget.ConstraintLayout>
