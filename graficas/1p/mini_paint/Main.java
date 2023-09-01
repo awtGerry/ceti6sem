@@ -152,7 +152,8 @@ public class Main extends JFrame implements ActionListener, MouseListener, Mouse
     }
 
     public static void main(String[] args) {
-        new Main();
+        Main window = new Main();
+        window.setVisible(true);
     }
 
 }
