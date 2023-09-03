@@ -1,168 +1,178 @@
-import javax.swing.*;
-import java.awt.*;
 import java.awt.event.*;
+import java.awt.*;
+import javax.swing.*;
 
-public class MiniPaint {
+public class MiniPaint extends JFrame implements ActionListener, MouseListener, MouseMotionListener {
+
+    private ButtonGroup modos;
+    private ButtonGroup colores;
+    private JPanel area;
+    private JLabel status;
+    private Image buffer;
+    private Image temporal;
+
+    private final int PUNTOS = 1;
+    private final int LINEAS = 2;
+    private final int RECTANGULOS = 3;
+    private final int CIRCULOS = 4;
+
+    private int modo;
+    private int x, y;
+
+    public MiniPaint() {
+        super("MiniPaint 1.0");
+        JMenuBar menuBar = new JMenuBar();
+
+        JMenu menuArchivo = new JMenu("Archivo");
+        JMenuItem opcionNuevo = new JMenuItem("Nuevo", 'N');
+        opcionNuevo.addActionListener(this);
+        opcionNuevo.setActionCommand("Nuevo");
+        menuArchivo.add(opcionNuevo);
+        menuBar.add(menuArchivo);
+
+        JMenuItem opcionSalir = new JMenuItem("Salir");
+        opcionSalir.addActionListener(this);
+        opcionSalir.setActionCommand("Salir");
+        menuArchivo.add(opcionSalir);
+        menuBar.add(menuArchivo);
+
+        modos = new ButtonGroup();
+        JMenu menuModo = new JMenu("Modo");
+        JRadioButtonMenuItem opcionPuntos = new JRadioButtonMenuItem("Puntos", true);
+        opcionPuntos.addActionListener(this);
+        opcionPuntos.setActionCommand("Puntos");
+        menuModo.add(opcionPuntos);
+        modos.add(opcionPuntos);
+
+        JRadioButtonMenuItem opcionLineas = new JRadioButtonMenuItem("Lineas");
+        opcionLineas.addActionListener(this);
+        opcionLineas.setActionCommand("Lineas");
+        menuModo.add(opcionLineas);
+        modos.add(opcionLineas);
+
+        JRadioButtonMenuItem opcionRectangulos = new JRadioButtonMenuItem("Rectangulos");
+        opcionRectangulos.addActionListener(this);
+        opcionRectangulos.setActionCommand("Rectangulos");
+        menuModo.add(opcionRectangulos);
+        modos.add(opcionRectangulos);
+
+        JRadioButtonMenuItem opcionCirculos = new JRadioButtonMenuItem("Circulos");
+        opcionCirculos.addActionListener(this);
+        opcionCirculos.setActionCommand("Circulos");
+        menuModo.add(opcionCirculos);
+        modos.add(opcionCirculos);
+
+        menuBar.add(menuModo);
+
+        area = new JPanel();
+        area.addMouseListener(this);
+        area.addMouseMotionListener(this);
+
+        status = new JLabel("Status", JLabel.LEFT);
+        setJMenuBar(menuBar);
+
+        getContentPane().add(area, BorderLayout.CENTER);
+        getContentPane().add(status, BorderLayout.SOUTH);
+
+        modo = PUNTOS;
+
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setLocationRelativeTo(this);
+        setSize(900, 700);
+
+        show();
+
+        buffer = area.createImage(area.getWidth(), area.getHeight());
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        String comando = e.getActionCommand();
+
+        if (comando.equals("Nuevo")) {
+            buffer = null;
+            area.getGraphics().clearRect(0, 0, area.getWidth(), area.getHeight());
+            buffer = area.createImage(area.getWidth(), area.getHeight());
+        } else if (comando.equals("Salir")) {
+            if (JOptionPane.showConfirmDialog(this, "En verdad desea salir?", "Confirmacion", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                dispose();
+                System.exit(0);
+            }
+        } else if (comando.equals("Puntos")) {
+            modo = PUNTOS;
+        } else if (comando.equals("Lineas")) {
+            modo = LINEAS;
+        } else if (comando.equals("Rectangulos")) {
+            modo = RECTANGULOS;
+        } else if (comando.equals("Circulos")) {
+            modo = CIRCULOS;
+        }
+    }
+
+    @Override
+    public void mouseClicked(java.awt.event.MouseEvent e) {
+    }
+
+    @Override
+    public void mousePressed(java.awt.event.MouseEvent e) {
+        x = e.getX();
+        y = e.getY();
+        temporal = area.createImage(area.getWidth(), area.getHeight());
+        temporal.getGraphics().drawImage(buffer, 0, 0, this);
+    }
+
+    @Override
+    public void mouseReleased(java.awt.event.MouseEvent e) {
+        buffer.getGraphics().drawImage(temporal, 0, 0, this);
+    }
+
+    @Override
+    public void mouseEntered(java.awt.event.MouseEvent e) {
+        setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
+    }
+
+    @Override
+    public void mouseExited(java.awt.event.MouseEvent e) {
+        setCursor(Cursor.getDefaultCursor());
+    }
+
+    @Override
+    public void mouseDragged(java.awt.event.MouseEvent e) {
+        Graphics g = temporal.getGraphics();
+        switch (modo) {
+            case PUNTOS:
+                g.fillOval(e.getX(), e.getY(), 2, 2);
+                area.getGraphics().drawImage(temporal, 0, 0, this);
+                break;
+            case LINEAS:
+                g.drawImage(buffer, 0, 0, area);
+                g.drawLine(x, y, e.getX(), e.getY());
+                area.getGraphics().drawImage(temporal, 0, 0, this);
+                break;
+            case RECTANGULOS:
+                g.drawImage(buffer, 0, 0, area);
+                int rectWidth = Math.abs(e.getX() - x);
+                int rectHeight = Math.abs(e.getY() - y);
+                g.drawRect(x, y, rectWidth, rectHeight);
+                area.getGraphics().drawImage(temporal, 0, 0, this);
+                break;
+            case CIRCULOS:
+                g.drawImage(buffer, 0, 0, area);
+                g.drawOval(x, y, e.getX() - x, e.getY() - y);
+                area.getGraphics().drawImage(temporal, 0, 0, this);
+                break;
+        }
+    }
+
+    @Override
+    public void mouseMoved(MouseEvent e) {
+        status.setText("x=" + e.getX() + ",y=" + e.getY());
+    }
 
     public static void main(String[] args) {
-        new Window().setVisible(true);
+        MiniPaint miniPaint = new MiniPaint();
+        miniPaint.setVisible(true);
     }
 
-    abstract static class Mode {
-        public static final int POINT = 0;
-        public static final int LINE = 1;
-        public static final int CIRCLE = 2;
-        public static final int RECTANGLE = 3;
-    }
-
-    static class Window extends JFrame {
-
-        public Window() {
-            super("MiniPaint 1.0");
-            setSize(500, 500);
-            setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            setLocationRelativeTo(null);
-
-            JMenuBar menuBar = new JMenuBar();
-
-            JMenu fileMenu = new JMenu("Archivo");
-            JMenuItem newMenuItem = new JMenuItem("Nuevo");
-
-            fileMenu.add(newMenuItem);
-            fileMenu.addSeparator();
-            JMenuItem exitMenuItem = new JMenuItem("Salir");
-            exitMenuItem.addActionListener(e -> {
-                if (JOptionPane.showConfirmDialog(null, "¿Está seguro de que desea salir?", "Salir", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION)
-                    System.exit(0);
-            });
-            fileMenu.add(exitMenuItem);
-
-            ButtonGroup options = new ButtonGroup();
-            JMenu modeMenu = new JMenu("Modo");
-            JRadioButtonMenuItem pointMode = new JRadioButtonMenuItem("Punto");
-            JRadioButtonMenuItem lineMode = new JRadioButtonMenuItem("Línea");
-            JRadioButtonMenuItem circleMode = new JRadioButtonMenuItem("Círculo");
-            JRadioButtonMenuItem rectangleMode = new JRadioButtonMenuItem("Rectángulo");
-
-
-            modeMenu.add(pointMode);
-            modeMenu.add(lineMode);
-            modeMenu.add(circleMode);
-            modeMenu.add(rectangleMode);
-
-            options.add(pointMode);
-            options.add(lineMode);
-            options.add(circleMode);
-            options.add(rectangleMode);
-
-            options.setSelected(pointMode.getModel(), true);
-
-            menuBar.add(fileMenu);
-            menuBar.add(modeMenu);
-
-            add(menuBar, BorderLayout.NORTH);
-
-            JLabel status = new JLabel("Status", JLabel.CENTER);
-            Canvas canvas = new Canvas(status);
-            getContentPane().add(canvas, BorderLayout.CENTER);
-
-            pointMode.addActionListener(e -> canvas.setMode(Mode.POINT));
-            lineMode.addActionListener(e -> canvas.setMode(Mode.LINE));
-            circleMode.addActionListener(e -> canvas.setMode(Mode.CIRCLE));
-            rectangleMode.addActionListener(e -> canvas.setMode(Mode.RECTANGLE));
-            newMenuItem.addActionListener(e -> {
-                if (JOptionPane.showConfirmDialog(null, "¿Está seguro de que desea crear un nuevo archivo?", "Nuevo", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-                    canvas.setImage(null);
-                    getContentPane().repaint();
-                }
-            });
-            getContentPane().add(status, BorderLayout.SOUTH);
-        }
-
-        static class Canvas extends JComponent {
-            private Image image, imageTmp = createImage(getWidth(), getHeight());
-            int mode = Mode.POINT;
-
-            private int x, y;
-
-            public void setMode(int mode) {
-                this.mode = mode;
-            }
-
-            public void setImage(Image image) {
-                this.image = image;
-            }
-
-            private int getMode() {
-                return mode;
-            }
-
-            public Canvas(JLabel status) {
-                addMouseListener(new MouseListener() {
-                    @Override
-                    public void mouseClicked(MouseEvent e) {
-                    }
-
-                    @Override
-                    public void mousePressed(MouseEvent e) {
-                        x = e.getX();
-                        y = e.getY();
-                        imageTmp = createImage(getWidth(), getHeight());
-                        imageTmp.getGraphics().drawImage(image, 0, 0, null);
-                    }
-
-                    @Override
-                    public void mouseReleased(MouseEvent e) {
-                        image = createImage(getWidth(), getHeight());
-                        image.getGraphics().drawImage(imageTmp, 0, 0, null);
-                        imageTmp = null;
-                        getGraphics().drawImage(image, 0, 0, null);
-                    }
-
-                    @Override
-                    public void mouseEntered(MouseEvent e) {
-                        setCursor(new Cursor(Cursor.CROSSHAIR_CURSOR));
-                    }
-
-                    @Override
-                    public void mouseExited(MouseEvent e) {
-                        setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-                    }
-                });
-
-                addMouseMotionListener(new MouseMotionListener() {
-
-                    @Override
-                    public void mouseDragged(MouseEvent e) {
-                        switch (getMode()) {
-                            case Mode.POINT -> {
-                                imageTmp.getGraphics().drawOval(e.getX(), e.getY(), 1, 1);
-                                getGraphics().drawImage(imageTmp, 0, 0, null);
-                            }
-                            case Mode.LINE -> {
-                                imageTmp.getGraphics().drawImage(image, 0, 0, null);
-                                imageTmp.getGraphics().drawLine(x, y, e.getX(), e.getY());
-                                getGraphics().drawImage(imageTmp, 0, 0, null);
-                            }
-                            case Mode.CIRCLE -> {
-                                imageTmp.getGraphics().drawImage(image, 0, 0, null);
-                                imageTmp.getGraphics().drawOval(x, y, e.getX() - x, e.getY() - y);
-                                getGraphics().drawImage(imageTmp, 0, 0, null);
-                            }
-                            case Mode.RECTANGLE -> {
-                                imageTmp.getGraphics().drawImage(image, 0, 0, null);
-                                imageTmp.getGraphics().drawRect(x, y, e.getX() - x, e.getY() - y);
-                                getGraphics().drawImage(imageTmp, 0, 0, null);
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void mouseMoved(MouseEvent e) {
-                        status.setText("x=" + e.getX() + ", y=" + e.getY());
-                    }
-                });
-            }
-        }
-    }
 }
+
