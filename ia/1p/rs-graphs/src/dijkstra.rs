@@ -1,88 +1,72 @@
-#![allow(dead_code)]
-#![allow(unused_imports)]
+use std::collections::BinaryHeap;
+use std::collections::HashMap;
+use std::collections::HashSet;
 
-use std::{cmp::Ordering, collections::HashMap};
-
+#[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Clone, Copy)]
 struct Vertice<'a> {
-    nombre: &'a str,
+    id: &'a str,
+    distance: i32,
 }
 
-impl<'a> Vertice<'a> {
-    // Constructor para crear un nuevo vertice
-    fn new(v_name: &'a str) -> Vertice<'a> {
-        Vertice { nombre: v_name }
+impl<'a> Vertice<'a>{
+    // Metodo para crear un nuevo vertice
+    fn new_graph(id: &'a str, distance: i32) -> Self {
+        Vertice { id, distance }
     }
 }
 
-#[derive(Debug)]
-struct Visita<V> {
-    vertice: V,
-    distancia: usize,
-}
+fn dijkstra<'a>(
+    grafo: &HashMap<&'a str, Vec<(&'a str, i32)>>,
+    inicio: &'a str
+    ) -> HashMap<&'a str, i32>
+{
+    let mut distancias: HashMap<&str, i32> = grafo.keys().map(|&x| (x, i32::MAX)).collect();
+    let mut visitas: HashSet<&str> = HashSet::new();
+    let mut prioridades: BinaryHeap<Vertice> = BinaryHeap::new();
 
-impl<V> Ord for Visita<V> {
-    fn cmp(&self, other: &Self) -> Ordering {
-        other.distancia.cmp(&self.distancia)
-    }
-}
+    distancias.insert(inicio, 0);
+    prioridades.push(Vertice::new_graph(inicio, 0));
 
-impl<V> PartialOrd for Visita<V> {
-    // Si el valor es mayor, se coloca en la parte superior
-    // Si el valor es menor, se coloca en la parte inferior
-    fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
-        Some(self.cmp(other))
-    }
-}
-
-impl<V> PartialEq for Visita<V> {
-    // Comparar los dos valores
-    fn eq(&self, other: &Self) -> bool {
-        self.distancia.eq(&other.distancia)
-    }
-}
-
-impl<V> Eq for Visita<V> {
-    // Comparar los dos valores
-}
-
-pub fn dijkstra_algorithm(
-    inicio: Vertice<'a>,
-    node_list: &HashMap<Vertice<'a>, Vec<(Vertice<'a>, usize)>>,
-    )
-  -> HashMap<Vertice<'a>, usize> {
-    let mut distancia = HashMap::new();
-    let mut visitados = Vec::new();
-    let mut por_visitar = Vec::new();
-
-    distancia.push(inicio, 0);
-    por_visitar.push(Visita {
-        vertice: inicio,
-        distancia: 0,
-    });
-
-    while let Some(Visita { vertice, distancia }) = distancia.pop() {
-        if visitados.contains(&vertice) {
+    // Mientras haya vertices por visitar en el heap
+    while let Some(vertice_actual) = prioridades.pop() {
+        // Validar que el vertice no haya sido visitado
+        if visitas.contains(&vertice_actual.id) {
             continue;
         }
 
-        if let Some(vecinos) = node_list.get(&vertice) {
-            for (vecinos, coste) in vecinos {
-                let nueva_distancia = distancia + coste;
-                let short = distancia
-                    .get(&vecinos)
-                    .map_or(true, |&current| nueva_distancia < current);
+        // Marcar el vertice actual como visitado
+        visitas.insert(vertice_actual.id);
 
-                if short {
-                    distancia.insert(*vecinos, nueva_distancia);
-                    por_visitar.push(Visita {
-                        vertice: *vecinos,
-                        distancia: nueva_distancia,
-                    });
+        // Actualizar las distancias de los vertices adyacentes
+        if let Some(adyacentes) = grafo.get(&vertice_actual.id) {
+            for &(adyacente, peso) in adyacentes {
+                let nueva_distancia = vertice_actual.distance + peso;
+                if nueva_distancia < *distancias.get(&adyacente).unwrap() {
+                    distancias.insert(adyacente, nueva_distancia);
+                    prioridades.push(Vertice::new_graph(adyacente, nueva_distancia));
                 }
             }
         }
     }
 
-    distancia
+    // Regresar las distancias mas cortas
+    distancias
+}
 
+fn main() {
+    // Grafo de ejemplo
+    let mut graph: HashMap<&str, Vec<(&str, i32)>> = HashMap::new();
+    // Se insertan los vertices y sus aristas con el peso de cada una
+    graph.insert("E", vec![("A", 2)]);
+    graph.insert("A", vec![("F", 2), ("D", 5)]);
+    graph.insert("F", vec![("B", 4)]);
+    graph.insert("D", vec![("B", 7)]);
+    graph.insert("B", vec![("F", 4), ("D", 7)]);
+
+    let vertice_inicio = "E";
+    let result = dijkstra(&graph, vertice_inicio);
+
+    for (vertex, distance) in result {
+        println!("Distancia mas corta de {} hacia {} es: {}", vertice_inicio, vertex, distance);
+    }
 }
