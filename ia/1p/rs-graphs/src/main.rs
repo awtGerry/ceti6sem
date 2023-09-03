@@ -1,65 +1,6 @@
-use std::collections::BinaryHeap;
 use std::collections::HashMap;
-use std::collections::HashSet;
 
-#[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Clone, Copy)]
-struct Vertice<'a> {
-    id: &'a str,
-    distance: i32,
-}
-
-impl<'a> Vertice<'a>{
-    // Metodo para crear un nuevo vertice
-    fn new_graph(id: &'a str, distance: i32) -> Self {
-        Vertice { id, distance }
-    }
-}
-
-fn dijkstra<'a>(
-    nodo: &HashMap<&'a str, Vec<(&'a str, i32)>>,
-    inicio: &'a str,
-    fin: &'a str,
-    ) -> HashMap<&'a str, i32>
-{
-    let mut distancias: HashMap<&str, i32> = nodo.keys().map(|&x| (x, i32::MAX)).collect();
-    let mut visitas: HashSet<&str> = HashSet::new();
-    let mut prioridades: BinaryHeap<Vertice> = BinaryHeap::new();
-    let mut shortest_path: HashMap<&str, &str> = HashMap::new();
-
-    distancias.insert(inicio, 0);
-    prioridades.push(Vertice::new_graph(inicio, 0));
-
-    // Encontrar el camino mas corto desde el inicio hasta el fin y regresar las distancias
-    while !prioridades.is_empty() {
-        let Vertice { id, distance } = prioridades.pop().unwrap();
-        if id == fin {
-            break;
-        }
-        if visitas.contains(id) {
-            continue;
-        }
-        visitas.insert(id);
-        for (vecino, peso) in &nodo[id] {
-            let peso = distance + peso;
-            if peso < distancias[vecino] {
-                distancias.insert(vecino, peso);
-                shortest_path.insert(vecino, id);
-                prioridades.push(Vertice::new_graph(vecino, peso));
-            }
-        }
-    }
-
-    // Regresar el camino mas corto desde el inicio hasta el fin
-    let mut path = vec![fin];
-    let mut current = fin;
-    while current != inicio {
-        current = shortest_path[current];
-        path.push(current);
-    }
-    println!("El camino mas corto desde {} hasta {} es: {:?}", inicio, fin, path);
-
-    distancias
-}
+mod dijkstra;
 
 fn main() {
     // Ejemplo
@@ -73,9 +14,12 @@ fn main() {
 
     let inicio = "A";
     let fin = "C";
-    dijkstra(&graph, inicio, fin);
+    let res = dijkstra::dijkstra(&graph, inicio, fin);
+    println!("El camino mas corto desde {} hasta {} es: {:?}", inicio, fin, res);
 
-    for (vertice, distance) in result {
-        println!("Distancia mas corta de {} hacia {} es: {}", inicio, vertice, distance);
-    }
+    // Para ver las distancias mas cortas de un vertice a todos los demas
+    // let result = dijkstra::dijkstra(&graph, inicio, fin);
+    // for (vertice, distance) in result {
+    //     println!("Distancia mas corta de {} hacia {} es: {}", inicio, vertice, distance);
+    // }
 }
