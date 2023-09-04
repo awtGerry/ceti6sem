@@ -2,3 +2,12 @@
 target/
 *.zip
 *.aux
+*.latexrun.*
+*.aux
+*.dvi
+*.fdb_latexmk
+*.fls
+*.log
+*.pyg
+*.synctex.gz
+*.log
