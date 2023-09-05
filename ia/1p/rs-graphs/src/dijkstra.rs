@@ -21,7 +21,7 @@ pub fn dijkstra<'a>(
     fin: &'a str,
     ) -> Vec<&'a str>
 {
-    let mut distancias: HashMap<&str, i32> = nodo.keys().map(|&x| (x, i32::MAX)).collect();
+    let mut distancias: HashMap<&str, i32> = nodo.keys().map(|&x| (x, i32::max_value())).collect();
     let mut visitas: HashSet<&str> = HashSet::new();
     let mut prioridades: BinaryHeap<Vertice> = BinaryHeap::new();
     let mut shortest_path: HashMap<&str, &str> = HashMap::new();
