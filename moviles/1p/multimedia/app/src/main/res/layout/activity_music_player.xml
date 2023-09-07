@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ActivityMusicPlayer">
+
+    <ImageView
+        android:id="@+id/imgAlbum"
+        android:layout_width="264dp"
+        android:layout_height="253dp"
+        android:contentDescription="@string/app_name"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="64dp"
+        app:srcCompat="@mipmap/disco_foreground" />
+
+
+    <TextView
+        android:id="@+id/musicArtist"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="@color/black"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imgAlbum" />
+
+    <TextView
+        android:id="@+id/musicSong"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@id/musicTime"
+        android:textSize="18sp"
+        android:layout_marginTop="12dp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/musicArtist" />
+
+    <TextView
+        android:id="@+id/musicTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="2dp"
+        app:layout_constraintStart_toStartOf="@+id/musicSeekBar"
+        app:layout_constraintTop_toBottomOf="@+id/musicSeekBar" />
+
+    <TextView
+        android:id="@+id/musicDuration"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="@color/black"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toEndOf="@+id/musicSeekBar"
+        app:layout_constraintTop_toBottomOf="@+id/musicSeekBar" />
+
+    <SeekBar
+        android:id="@+id/musicSeekBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32sp"
+        app:layout_constraintTop_toBottomOf="@+id/musicSong" />
+
+    <ImageButton
+        android:id="@+id/musicBack"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginStart="20dp"
+        android:background="@drawable/back"
+        android:contentDescription="@string/app_name"
+        app:layout_constraintEnd_toStartOf="@+id/musicPlay"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/musicPlay" />
+
+    <ImageButton
+        android:id="@+id/musicForward"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:background="@drawable/next"
+        android:contentDescription="@string/app_name"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/musicPlay"
+        app:layout_constraintTop_toTopOf="@+id/musicPlay" />
+
+    <ImageButton
+        android:id="@+id/musicPlay"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:contentDescription="@string/app_name"
+        android:background="@drawable/play"
+        android:layout_marginTop="60dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/musicSeekBar" />
+
+    <ImageButton
+        android:id="@+id/musicPause"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:contentDescription="@string/app_name"
+        android:background="@drawable/pause"
+        android:layout_marginTop="60dp"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/musicSeekBar" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,12 @@
+<resources>
+    <!-- Opciones menu-->
+    <string name="app_name">Multimedia</string>
+    <string name="menu1">Music Player</string>
+    <string name="menu2">Media Player</string>
+    <string name="menu3">Video View</string>
+    <!-- Menu 1 -->
+    <string name="title">Music Player</string>
+    <!-- Menu2 -->
+    <string name="play">Play</string>
+    <string name="stop">Stop</string>
+</resources>
