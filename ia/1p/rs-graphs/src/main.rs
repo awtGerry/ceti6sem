@@ -1,9 +1,10 @@
 use std::collections::HashMap;
 
 mod dijkstra;
+mod pso;
 
-fn main() {
-    // Ejemplo
+#[allow(unused)]
+fn call_dijkstra() {
     let mut graph: HashMap<&str, Vec<(&str, i32)>> = HashMap::new();
     graph.insert("A", vec![("B", 3), ("D", 8)]);
     graph.insert("B", vec![("D", 5), ("E", 6)]);
@@ -16,10 +17,14 @@ fn main() {
     let fin = "C";
     let res = dijkstra::dijkstra(&graph, inicio, fin);
     println!("El camino mas corto desde {} hasta {} es: {:?}", inicio, fin, res);
+}
 
-    // Para ver las distancias mas cortas de un vertice a todos los demas
-    // let result = dijkstra::dijkstra(&graph, inicio, fin);
-    // for (vertice, distance) in result {
-    //     println!("Distancia mas corta de {} hacia {} es: {}", inicio, vertice, distance);
-    // }
+fn call_pso() {
+    let n = 40 as usize;
+    const X_MAX: f64 = 5.0;
+    const X_MIN: f64 = -5.0;
+}
+
+fn main() {
+    call_pso();
 }
