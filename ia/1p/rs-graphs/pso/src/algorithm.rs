@@ -5,13 +5,13 @@ extern crate rand;
 
 use rand::Rng;
 
-const N: usize = 10;
-const ITERACIONES: u16 = 100;
-const X_MAX: f64 = 5.12;
-const X_MIN: f64 = -5.12;
-const C1: f64 = 2.0;
-const C2: f64 = 0.2;
-const W: f64 = 0.9;
+const N: usize = 40;
+const ITERACIONES: u32 = 100_000;
+const X_MAX: f64 = 5.0;
+const X_MIN: f64 = -5.0;
+const C1: f64 = 1.0;
+const C2: f64 = 0.1;
+const W: f64 = 1.5;
 const A: f64 = 0.9;
 const T: f64 = 1.0;
 
@@ -73,7 +73,7 @@ fn iniciar(
         particulas.push(particula);
     }
 
-    println!("{:?}", particulas);
+    // println!("{:?}", particulas);
     particulas
 }
 
