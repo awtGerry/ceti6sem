@@ -19,12 +19,6 @@ fn call_dijkstra() {
     println!("El camino mas corto desde {} hasta {} es: {:?}", inicio, fin, res);
 }
 
-fn call_pso() {
-    let n = 40 as usize;
-    const X_MAX: f64 = 5.0;
-    const X_MIN: f64 = -5.0;
-}
-
 fn main() {
-    call_pso();
+    call_dijkstra();
 }

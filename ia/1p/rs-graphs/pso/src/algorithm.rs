@@ -5,8 +5,8 @@ extern crate rand;
 
 use rand::Rng;
 
-const ITERACIONES: u16 = 100;
 const N: usize = 10;
+const ITERACIONES: u16 = 100;
 const X_MAX: f64 = 5.12;
 const X_MIN: f64 = -5.12;
 const C1: f64 = 2.0;
@@ -25,12 +25,22 @@ struct Abeja {
 }
 
 pub fn pso() {
-    let mut particulas = iniciar(N, X_MAX, X_MIN, A, T);
+    let mut abejas = iniciar(N, X_MAX, X_MIN, A, T);
+    let mut mejor_abeja_pos = (X_MIN, X_MAX);
 
     for i in 0..ITERACIONES {
-        let particulas_pos: Vec<f64> = particulas.iter().map(|x| evaluar(x.posicion)).collect();
-        let particulas_mejor_pos: Vec<f64> = particulas.iter().map(|x| evaluar(x.mejor_pos)).collect();
-    }
+        let abejas_pos: Vec<f64> = abejas.iter().map(|x| evaluar(x.posicion)).collect();
+        let abejas_mejor_pos: Vec<f64> = abejas.iter().map(|x| evaluar(x.mejor_pos)).collect();
+
+        actualizar(&mut abejas, &mut mejor_abeja_pos, &abejas_pos, &abejas_mejor_pos, i as usize);
+
+        if 1.0 / evaluar(mejor_abeja_pos) < 0.0001 {
+            println!("Salio en iteracion {:?}", i);
+            break;
+        }
+    }    
+    let mejor_abeja = evaluar(mejor_abeja_pos);
+    println!("Mejor abeja: {:?} con valor {:?}", mejor_abeja_pos, mejor_abeja);
 }
 
 fn iniciar(
