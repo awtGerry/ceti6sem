@@ -1,28 +1,51 @@
-use glium::Surface;
+use graphics::Graphics;
+use opengl_graphics::{OpenGL, GlGraphics};
+use piston::{
+    WindowSettings,
+    RenderArgs,
+    UpdateArgs, Events, EventSettings, RenderEvent, UpdateEvent
+};
+use piston_window::PistonWindow;
+
+const BLACK: [f32; 4] = [0.0, 0.0, 0.0, 1.0];
+
+struct App {
+    pub(crate) gl: GlGraphics,
+}
+
+impl App {
+    fn render(&mut self, args: &RenderArgs) {
+        self.gl.draw(args.viewport(), |_c, gl| {
+            gl.clear_color(BLACK)
+        });
+    }
+
+    fn update(&mut self, _args: &UpdateArgs) { }
+}
+
+fn run_app(app: &mut App, w: &mut PistonWindow) {
+    let mut events = Events::new(EventSettings::new());
+    while let Some(e) = events.next(w) {
+        if let Some(args) = e.render_args() {
+            app.render(&args);
+        }
+        if let Some(args) = e.update_args() {
+            app.update(&args);
+        }
+    }
+}
 
 fn main() {
+    let opengl = OpenGL::V4_5;
+    let mut window: PistonWindow = WindowSettings::new(
+        "Title: Piston Window",
+        [800, 600])
+        .graphics_api(opengl)
+        .exit_on_esc(true)
+        .build()
+        .unwrap();
+    let gl = GlGraphics::new(opengl);
 
-    // 1. The **winit::EventsLoop** for handling events.
-    let events_loop = glium::glutin::event_loop::EventLoop::new();
-    // 2. Parameters for building the Window.
-    let wb = glium::glutin::window::WindowBuilder::new()
-        .with_inner_size(glium::glutin::dpi::LogicalSize::new(1024.0, 768.0))
-        .with_title("Hello world");
-    // 3. Parameters for building the OpenGL context.
-    let cb = glium::glutin::ContextBuilder::new();
-    // 4. Build the Display with the given window and OpenGL context parameters and register the
-    //    window with the events_loop.
-    let display = glium::Display::new(wb, cb, &events_loop).unwrap();
-    let mut frame = display.draw();
-
-    events_loop.run(move |ev, _, control_flow| {
-        match ev {
-            winit::event::Event::WindowEvent { event, .. } => match event {
-                winit::event::WindowEvent::CloseRequested => control_flow.set_exit(),
-                _ => (),
-            },
-        }
-    });
-    frame.clear_color(0.0, 0.0, 0.0, 1.0);
-    frame.finish().unwrap();
+    let mut app = App { gl };
+    run_app(&mut app, &mut window);
 }

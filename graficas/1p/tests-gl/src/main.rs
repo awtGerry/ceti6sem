@@ -1,0 +1,28 @@
+use glium::Surface;
+
+fn main() {
+
+    // 1. The **winit::EventsLoop** for handling events.
+    let events_loop = glium::glutin::event_loop::EventLoop::new();
+    // 2. Parameters for building the Window.
+    let wb = glium::glutin::window::WindowBuilder::new()
+        .with_inner_size(glium::glutin::dpi::LogicalSize::new(1024.0, 768.0))
+        .with_title("Hello world");
+    // 3. Parameters for building the OpenGL context.
+    let cb = glium::glutin::ContextBuilder::new();
+    // 4. Build the Display with the given window and OpenGL context parameters and register the
+    //    window with the events_loop.
+    let display = glium::Display::new(wb, cb, &events_loop).unwrap();
+    let mut frame = display.draw();
+
+    events_loop.run(move |ev, _, control_flow| {
+        match ev {
+            winit::event::Event::WindowEvent { event, .. } => match event {
+                winit::event::WindowEvent::CloseRequested => control_flow.set_exit(),
+                _ => (),
+            },
+        }
+    });
+    frame.clear_color(0.0, 0.0, 0.0, 1.0);
+    frame.finish().unwrap();
+}
