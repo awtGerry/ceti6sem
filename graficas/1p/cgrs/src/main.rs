@@ -3,6 +3,17 @@ use cgrs::wrapper::*;
 
 use std::ptr;
 
+const WIDTH: u32 = 800;
+const HEIGHT: u32 = 600;
+
+#[allow(unused)]
+fn draw_pixel(x: i32, y: i32) {
+    unsafe {
+        gl::DrawArrays(gl::LINES, x, y);
+    }
+}
+
+#[allow(unused)]
 fn dda_line(x1: i32, y1: i32, x2: i32, y2: i32) {
     let dx = x2 - x1;
     let dy = y2 - y1;
@@ -16,18 +27,21 @@ fn dda_line(x1: i32, y1: i32, x2: i32, y2: i32) {
     let mut y = y1 as f32;
 
     for _ in 0..steps {
-        unsafe {
-            gl::VertexP2ui(x as u32, y as u32);
-        }
+        draw_pixel(x as i32, y as i32);
         x += x_inc;
         y += y_inc;
     }
 }
 
 fn main() {
-    let mut window = Window::new(800, 600, "Title");
+    let mut window = Window::new(WIDTH, HEIGHT, "Title");
 
-    let pixel: [f32; 3] = [0.0, 0.0, 0.0];
+    let cordenates: [f32; 4] = [
+        -0.5, // x1
+        -0.5, // y1
+        0.5,  // x2
+        0.5,  // y2
+    ];
 
     window.init();
 
@@ -35,7 +49,7 @@ fn main() {
     vao.bind();
     let vbo = BufferGL::new(gl::ARRAY_BUFFER, gl::STATIC_DRAW);
     vbo.bind();
-    vbo.buffer_data(&pixel);
+    vbo.buffer_data(&cordenates);
 
     let position_attrib = VertexGL::new(
         0,
@@ -53,7 +67,9 @@ fn main() {
         unsafe {
             gl::ClearColor(0.0, 0.0, 0.0, 1.0); // black background
             gl::Clear(gl::COLOR_BUFFER_BIT);
-            dda_line(20, 20, 100, 100);
+            gl::PointSize(10.0);
+            // Draw cordenates
+            gl::DrawArrays(gl::LINES, 0, 3);
         }
 
         window.update();
