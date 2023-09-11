@@ -6,48 +6,17 @@ use std::ptr;
 const WIDTH: u32 = 800;
 const HEIGHT: u32 = 600;
 
-#[allow(unused)]
 fn draw_pixel(x: i32, y: i32) {
     unsafe {
-        gl::DrawArrays(gl::LINES, 0, 2);
+        gl::DrawArrays(gl::LINES, x, y); // Draw the line
     }
 }
 
-#[allow(unused)]
-fn dda_line(x1: i32, y1: i32, x2: i32, y2: i32) {
-    let dx = x2 - x1;
-    let dy = y2 - y1;
-
-    let steps = if dx.abs() > dy.abs() { dx.abs() } else { dy.abs() };
-
-    let x_inc = dx as f32 / steps as f32;
-    let y_inc = dy as f32 / steps as f32;
-
-    let mut x = x1 as f32;
-    let mut y = y1 as f32;
-
-    for _ in 0..steps {
-        draw_pixel(x as i32, y as i32);
-        x += x_inc;
-        y += y_inc;
-    }
-}
-
-fn main() {
-    let mut window = Window::new(WIDTH, HEIGHT, "Title");
-
-    window.init();
-
-    let cordenates: [f32; 4] = [
-        0.3, // x1
-        0.5, // y1
-        0.9,  // x2
-        0.9,  // y2
-    ];
+fn dda_line(x1: f32, y1: f32, x2: f32, y2: f32) {
+    let cordenates: [f32; 4] = [x1, y1, x2, y2];
 
     let vao = VAO::new();
-    vao.bind();
-    let vbo = BufferGL::new(gl::ARRAY_BUFFER, gl::STATIC_DRAW);
+    vao.bind(); let vbo = BufferGL::new(gl::ARRAY_BUFFER, gl::STATIC_DRAW);
     vbo.bind();
     vbo.buffer_data(&cordenates);
 
@@ -62,6 +31,29 @@ fn main() {
 
     position_attrib.enable();
 
+    let dx = x2 - x1;
+    let dy = y2 - y1;
+
+    let steps = if dx.abs() > dy.abs() { dx.abs() } else { dy.abs() };
+
+    let x_inc = dx as f32 / steps as f32;
+    let y_inc = dy as f32 / steps as f32;
+
+    let mut x = x1 as f32;
+    let mut y = y1 as f32;
+
+    for _ in 0..steps as i32 {
+        draw_pixel(x as i32, y as i32);
+        x += x_inc;
+        y += y_inc;
+    }
+}
+
+fn main() {
+    let mut window = Window::new(WIDTH, HEIGHT, "Title");
+
+    window.init();
+
     while !window.should_close() {
 
         unsafe {
@@ -69,6 +61,7 @@ fn main() {
             gl::Clear(gl::COLOR_BUFFER_BIT);
             gl::PointSize(10.0);
             // Draw cordenates
+            dda_line(-0.3, -0.5, 0.9, 0.9);
             gl::DrawArrays(gl::LINES, 0, 3);
         }
 
