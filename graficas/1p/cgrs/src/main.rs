@@ -9,7 +9,7 @@ const HEIGHT: u32 = 600;
 #[allow(unused)]
 fn draw_pixel(x: i32, y: i32) {
     unsafe {
-        gl::DrawArrays(gl::LINES, x, y);
+        gl::DrawArrays(gl::LINES, 0, 2);
     }
 }
 
@@ -36,14 +36,14 @@ fn dda_line(x1: i32, y1: i32, x2: i32, y2: i32) {
 fn main() {
     let mut window = Window::new(WIDTH, HEIGHT, "Title");
 
-    let cordenates: [f32; 4] = [
-        -0.5, // x1
-        -0.5, // y1
-        0.5,  // x2
-        0.5,  // y2
-    ];
-
     window.init();
+
+    let cordenates: [f32; 4] = [
+        0.3, // x1
+        0.5, // y1
+        0.9,  // x2
+        0.9,  // y2
+    ];
 
     let vao = VAO::new();
     vao.bind();
