@@ -8,3 +8,4 @@ Every algorithm has his own key, here is a list of them:
 - Key: I -> Runs DDA algorithm (L,R)
 - Key: B -> Runs Bresenham's algorithm
 - Key: C -> Runs Basic Circle algorithm
+- Key: R -> Runs a Rectangle using DDA
