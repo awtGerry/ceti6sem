@@ -60,7 +60,7 @@ pub fn dda_line(x1: f32, y1: f32, x2: f32, y2: f32) {
 pub fn bresenham_line(x1: f32, y1: f32, x2: f32, y2: f32) {
     let cordenates: [f32; 4] = [x1, y1, x2, y2];
 
-    set_vao_vbo(&cordenates, 4);
+    set_vao_vbo(&cordenates, 3);
 
     let mut dx = x2 - x1;
     let mut dy = y2 - y1;
