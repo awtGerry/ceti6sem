@@ -64,6 +64,16 @@ impl Window {
                 glfw::WindowEvent::Key(Key::Escape, _, Action::Press, _) => {
                     self.window.set_should_close(true);
                 },
+
+                glfw::WindowEvent::Key(Key::X, _, Action::Press, _) => { // DER, IZQ
+                    unsafe {
+                        gl::Viewport(0, 0, 800, 600);
+                        gl::Clear(gl::COLOR_BUFFER_BIT);
+                    }
+                    draw_pixel(0, 0);
+                },
+
+                /* LINES EVENTS */
                 glfw::WindowEvent::Key(Key::D, _, Action::Press, _) => { // DER, IZQ
                     unsafe {
                         gl::Viewport(0, 0, 800, 600);
@@ -95,6 +105,9 @@ impl Window {
                     } // De momento el eje se define por algoritmo
                     draw_rectangle(0.5, 0.5, -0.5, -0.5)
                 },
+                /* END OF LINES EVENTS */
+
+                /* CIRCLES EVENTS */
                 glfw::WindowEvent::Key(Key::C, _, Action::Press, _) => {
                     unsafe {
                         gl::Viewport(0, 0, 800, 600);
@@ -108,6 +121,22 @@ impl Window {
                         gl::Clear(gl::COLOR_BUFFER_BIT);
                     } // De momento el eje se define por algoritmo
                     draw_mid_point_circle(200.0, 200.0, 100.0)
+                },
+                glfw::WindowEvent::Key(Key::P, _, Action::Press, _) => {
+                    unsafe {
+                        gl::Viewport(0, 0, 800, 600);
+                        gl::Clear(gl::COLOR_BUFFER_BIT);
+                    } // De momento el eje se define por algoritmo
+                    polar_circle(20.0, 200.0, 100.0, 200.0)
+                },
+                /* END OF CIRCLES EVENTS */
+
+                glfw::WindowEvent::Key(Key::E, _, Action::Press, _) => {
+                    unsafe {
+                        gl::Viewport(0, 0, 800, 600);
+                        gl::Clear(gl::COLOR_BUFFER_BIT);
+                    } // De momento el eje se define por algoritmo
+                    ellipse(200.0, 200.0, 100.0, 50.0)
                 },
                 _ => {}
             }
