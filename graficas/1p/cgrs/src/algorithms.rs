@@ -149,3 +149,29 @@ pub fn draw_rectangle(x1: f32, y1: f32, x2: f32, y2: f32) {
         gl::DrawElements(gl::TRIANGLES, 6, gl::UNSIGNED_INT, ptr::null()); // Agregar fondo blanco
     }
 }
+
+pub fn draw_mid_point_circle(xc: f32, yc: f32, r: f32) {
+    let mut x = 0.0;
+    let mut y = r;
+
+    let mut d = 1.0 - r;
+
+    while x < y {
+        draw_pixel(xc as i32 + x as i32, yc as i32 + y as i32);
+        draw_pixel(xc as i32 + y as i32, yc as i32 + x as i32);
+        draw_pixel(xc as i32 - x as i32, yc as i32 + y as i32);
+        draw_pixel(xc as i32 - y as i32, yc as i32 + x as i32);
+        draw_pixel(xc as i32 + x as i32, yc as i32 - y as i32);
+        draw_pixel(xc as i32 + y as i32, yc as i32 - x as i32);
+        draw_pixel(xc as i32 - x as i32, yc as i32 - y as i32);
+        draw_pixel(xc as i32 - y as i32, yc as i32 - x as i32);
+
+        if d < 0.0 {
+            d += 2.0 * x + 3.0;
+        } else {
+            d += 2.0 * (x - y) + 5.0;
+            y -= 1.0;
+        }
+        x += 1.0;
+    }
+}

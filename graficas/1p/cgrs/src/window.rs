@@ -1,7 +1,7 @@
 #[allow(unused_imports)]
 use glfw::{Action, Context, Key, WindowEvent};
 
-use crate::algorithms::{dda_line,bresenham_line,draw_circle,draw_rectangle};
+use crate::algorithms::*;
 
 /* -- Manejar nuevos eventos de ventana --
   Crear argumentos para la función de callback de eventos de ventana
@@ -88,6 +88,13 @@ impl Window {
                     } // De momento el eje se define por algoritmo
                     bresenham_line(0.9, 0.9, 0.9, 0.9) // Decimales como enteros por el momento
                 },
+                glfw::WindowEvent::Key(Key::R, _, Action::Press, _) => {
+                    unsafe {
+                        gl::Viewport(0, 0, 800, 600);
+                        gl::Clear(gl::COLOR_BUFFER_BIT);
+                    } // De momento el eje se define por algoritmo
+                    draw_rectangle(0.5, 0.5, -0.5, -0.5)
+                },
                 glfw::WindowEvent::Key(Key::C, _, Action::Press, _) => {
                     unsafe {
                         gl::Viewport(0, 0, 800, 600);
@@ -95,12 +102,12 @@ impl Window {
                     } // De momento el eje se define por algoritmo
                     draw_circle(20.0, 200.0, 100.0, 200.0)
                 },
-                glfw::WindowEvent::Key(Key::R, _, Action::Press, _) => {
+                glfw::WindowEvent::Key(Key::M, _, Action::Press, _) => {
                     unsafe {
                         gl::Viewport(0, 0, 800, 600);
                         gl::Clear(gl::COLOR_BUFFER_BIT);
                     } // De momento el eje se define por algoritmo
-                    draw_rectangle(0.5, 0.5, -0.5, -0.5)
+                    draw_mid_point_circle(200.0, 200.0, 100.0)
                 },
                 _ => {}
             }
