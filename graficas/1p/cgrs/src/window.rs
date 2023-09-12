@@ -1,6 +1,8 @@
 #[allow(unused_imports)]
 use glfw::{Action, Context, Key, WindowEvent};
 
+use crate::algorithms::{dda_line,bresenham_line};
+
 /* -- Manejar nuevos eventos de ventana --
   Crear argumentos para la función de callback de eventos de ventana
 
@@ -53,7 +55,6 @@ impl Window {
         self.glfw.poll_events();
     }
 
-    #[allow(unused)]
     fn handle_events(&mut self) {
         for(_, event) in glfw::flush_messages(&self.events) {
             match event {
@@ -62,6 +63,21 @@ impl Window {
                 },
                 glfw::WindowEvent::Key(Key::Escape, _, Action::Press, _) => {
                     self.window.set_should_close(true);
+                },
+                glfw::WindowEvent::Key(Key::D, _, Action::Press, _) => { // DER, IZQ
+                    unsafe { gl::Viewport(0, 0, 800, 600); } // De momento el eje se define por algoritmo
+                    // TODO: Arreglar esto, si las coordenadas son numeros grandes el dibujo se desvanece
+                    // dda_line(100.0, 100.0, -200.0, 200.0)
+                    // dda_line(-0.2, 0.0, -0.8, 0.9)
+                    dda_line(0.2, 0.0, 0.8, 0.9)
+                },
+                glfw::WindowEvent::Key(Key::I, _, Action::Press, _) => { // IZQ, DER
+                    unsafe { gl::Viewport(0, 0, 800, 600); } // De momento el eje se define por algoritmo
+                    dda_line(-0.2, 0.0, -0.8, 0.9)
+                },
+                glfw::WindowEvent::Key(Key::B, _, Action::Press, _) => {
+                    unsafe { gl::Viewport(-400, -300, 800, 600); } // De momento el eje se define por algoritmo
+                    bresenham_line(0.9, 0.9, 0.9, 0.9) // Decimales como enteros por el momento
                 },
                 _ => {}
             }
