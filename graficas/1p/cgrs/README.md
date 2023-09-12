@@ -12,3 +12,12 @@ Every algorithm has his own key, here is a list of them:
 - Key: M -> Runs Mid Point Circle algorithm
 - Key: P -> Runs Polar Circle algorithm
 - Key: E -> Runs Ellipse algorithm
+
+# How to run the program
+```sh
+cargo run
+```
+To run an example:
+```sh
+cargo run --example basic_circle # Not currently working
+```
