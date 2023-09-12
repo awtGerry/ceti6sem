@@ -5,7 +5,13 @@ use std::ptr;
 
 fn draw_pixel(x: i32, y: i32) {
     unsafe {
+        // gl::Viewport(0, 0, x, y);
         gl::DrawArrays(gl::POINTS, x, y);
+        gl::Enable(gl::SCISSOR_TEST);
+        gl::Scissor(x, y, 1, 1);
+        gl::ClearColor(1.0, 1.0, 1.0, 1.0);
+        gl::Clear(gl::COLOR_BUFFER_BIT);
+        gl::Disable(gl::SCISSOR_TEST);
     }
 }
 
@@ -94,23 +100,52 @@ pub fn bresenham_line(x1: f32, y1: f32, x2: f32, y2: f32) {
 
 pub fn draw_circle(x1: f32, y1: f32, xc: f32, yc: f32) {
     // get radious squared (r^2) = (x2 - x1)^2 + (y2 - y1)^2
-    let mut r: f32 = ((xc - x1).powi(2) + (yc - y1).powi(2)) as f32;
-    r = r.sqrt();
+    let r: f32 = ((x1 - xc).powi(2) + (y1 - yc).powi(2)).sqrt();
 
-    for x in (xc - r as f32) as i32..=(xc + r as f32) as i32 {
-        let top_y = (yc as f32 + (r as f32).powi(2) - (x as f32 - xc as f32).powi(2)).sqrt() as u32;
-        let bottom_y = (yc as f32 - (r as f32).powi(2) - (x as f32 - xc as f32).powi(2)).sqrt() as u32;
-        draw_pixel(x as i32, top_y as i32);
-        draw_pixel(x as i32, bottom_y as i32);
+    set_vao_vbo(&[x1, y1, xc, yc], 4);
+
+    for x in (xc - r) as i32..=(xc + r) as i32 {
+        let top_y = yc as i32 + (((r).powi(2) - (x as f32 - xc ).powi(2)).sqrt()) as i32;
+        let bottom_y = yc as i32 - ((r as f32).powi(2) - (x as f32 - xc as f32).powi(2)).sqrt() as i32;
+        draw_pixel(x, top_y);
+        draw_pixel(x, bottom_y);
     }
 
 }
 
 pub fn draw_rectangle(x1: f32, y1: f32, x2: f32, y2: f32) {
-    let cordenates: [f32; 4] = [x1, y1, x2, y2];
-    set_vao_vbo(&cordenates, 4);
     dda_line(x1, y1, x2, y1);
-    dda_line(x1, y1, x1, y2);
     dda_line(x2, y1, x2, y2);
-    dda_line(x1, y2, x2, y2);
+    dda_line(x2, y2, x1, y2);
+    dda_line(x1, y2, x1, y1);
+
+    let cordenates: [f32; 12] = [
+        x1, y1, 0.0, x2, y1, 0.0, x2, y2, 0.0, x1, y2, 0.0,
+    ];
+    let indices: [u32; 6] = [0, 1, 2, 2, 3, 0];
+
+    let vao = VAO::new();
+    vao.bind();
+    let vbo = BufferGL::new(gl::ARRAY_BUFFER, gl::STATIC_DRAW);
+    vbo.bind();
+    vbo.buffer_data(&cordenates);
+
+    // TODO: Las lineas se borran por lo tanto agregue un fondo blanco temporal para que se quede el rectangulo
+    let ebo = BufferGL::new(gl::ELEMENT_ARRAY_BUFFER, gl::STATIC_DRAW);
+    ebo.bind();
+    ebo.buffer_data(&indices);
+
+    let position_attrib = VertexGL::new(
+        0,
+        3,
+        gl::FLOAT,
+        gl::FALSE,
+        3 * std::mem::size_of::<f32>() as i32,
+        ptr::null(),
+    );
+    position_attrib.enable();
+
+    unsafe {
+        gl::DrawElements(gl::TRIANGLES, 6, gl::UNSIGNED_INT, ptr::null()); // Agregar fondo blanco
+    }
 }
