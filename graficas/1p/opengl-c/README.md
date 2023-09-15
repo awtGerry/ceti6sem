@@ -1,2 +1,3 @@
-# About
-Computer graphics in c using SDL and other nice things
+Trying some stuff for computer graphics in C
+
+(I went another direction).
