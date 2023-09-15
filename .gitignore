@@ -1,5 +1,6 @@
 *.class
 target/
+moviles/
 *.zip
 *.aux
 *.latexrun.*
