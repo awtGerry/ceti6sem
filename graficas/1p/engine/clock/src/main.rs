@@ -1,36 +1,19 @@
 use engine::graphics::window::Window;
-use engine::graphics::wrapper::*;
 
-use gl::types::*;
-use std::mem;
-use std::ptr;
-
-fn set_vao_vbo(vertices: &[GLfloat], size: usize) {
-    let vao = Vao::new();
-    vao.bind();
-    let vbo = Buffer::new(gl::ARRAY_BUFFER, gl::STATIC_DRAW);
-    vbo.bind();
-    vbo.buffer_data(vertices);
-
-    let position_attrib_location = Vertex::new(
-        0,
-        size as i32,
-        gl::FLOAT,
-        gl::FALSE,
-        (size * mem::size_of::<GLfloat>()) as GLsizei,
-        ptr::null(),
-    );
-    position_attrib_location.enable();
-}
+mod figures;
 
 fn main() {
-    let mut window = Window::new(800, 600, "Hello, world!");
+    let mut window = Window::new(1280, 720, "Clock");
+
     window.init();
 
     while !window.should_close() {
         unsafe {
-            gl::ClearColor(0.2, 0.3, 0.3, 1.0);
-            gl::Clear(gl::COLOR_BUFFER_BIT);
+            gl::ClearColor(0.0, 0.0, 0.0, 1.0);
+            // gl::Clear(gl::COLOR_BUFFER_BIT);
+            figures::draw_rectangle_fill(-0.5, -0.5, 0.5, 0.5);
+            // TODO: There is a bug here, the line draw twice for some reason
+            // gl::DrawArrays(gl::LINES, 0, 5);
         }
         window.update();
     }

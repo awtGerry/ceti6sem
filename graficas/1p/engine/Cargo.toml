@@ -8,5 +8,6 @@ name = "clock"
 path = "clock/src/main.rs"
 
 [dependencies]
+cgmath = "0.18.0"
 gl = "0.14.0"
 glfw = "0.52.0"

@@ -43,7 +43,7 @@ impl Window {
         for (_, event) in glfw::flush_messages(&self.events) {
             match event {
                 WindowEvent::FramebufferSize(width, height) => unsafe {
-                    gl::Viewport(-(width/2), -(height/2), width, height);
+                    gl::Viewport(0, 0, width, height);
                 },
                 WindowEvent::Key(Key::Escape, _, Action::Press, _) => {
                     self.window.set_should_close(true)

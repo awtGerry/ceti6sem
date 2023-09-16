@@ -1,8 +1,4 @@
 use std::mem;
-#[allow(unused_imports)]
-use std::os::raw::*;
-#[allow(unused_imports)]
-use std::ptr;
 
 #[derive(Debug)]
 pub struct Vao {
