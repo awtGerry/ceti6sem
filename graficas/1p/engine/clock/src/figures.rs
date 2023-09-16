@@ -3,6 +3,7 @@ use engine::graphics::shader::*;
 
 #[allow(unused_imports)]
 use std::{mem, ptr};
+use std::os::raw::c_void;
 use gl::types::*;
 
 fn set_vao_vbo(vao: &Vao, vbo: &Buffer, vertices: &[f32], size: usize) {
@@ -20,7 +21,6 @@ fn set_vao_vbo(vao: &Vao, vbo: &Buffer, vertices: &[f32], size: usize) {
     );
     position_attrib_location.enable();
 }
-
 pub fn draw_pixel(x: i32, y: i32) {
     unsafe {
         gl::DrawArrays(gl::POINTS, 0, 2);
@@ -57,8 +57,15 @@ pub fn draw_line(x1: f32, y1: f32, x2: f32, y2: f32) { // DDA
     }
 }
 
-// pub fn draw_triangle() {
-// }
+pub fn draw_triangle(x1: f32, y1: f32, x2: f32, y2: f32) {
+    let vertices: [f32; 18] = [
+        // positions        // colors
+        x1, y1, 0.0,        1.0, 0.0, 0.0, // bottom right
+        x2, y1, 0.0,        0.0, 1.0, 0.0, // bottom left
+        0.0, y2, 0.0,        0.0, 0.0, 1.0, // top
+    ];
+}
+
 
 // pub fn draw_circle() {
 // }
@@ -73,6 +80,7 @@ pub fn draw_rectangle(x1: f32, y1: f32, x2: f32, y2: f32) {
 
 pub fn draw_rectangle_fill(x1: f32, y1: f32, x2: f32, y2: f32) {
     let cordenates: [f32; 12] = [
+        // Positions
         x1, y1, 0.0,
         x2, y1, 0.0,
         x1, y2, 0.0,

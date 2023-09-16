@@ -3,7 +3,7 @@ use engine::graphics::window::Window;
 mod figures;
 
 fn main() {
-    let mut window = Window::new(1280, 720, "Clock");
+    let mut window = Window::new(1366, 720, "Clock");
 
     window.init();
 
