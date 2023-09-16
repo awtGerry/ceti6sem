@@ -77,7 +77,6 @@ impl Window {
                 glfw::WindowEvent::Key(Key::D, _, Action::Press, _) => { // DER, IZQ
                     unsafe {
                         gl::Viewport(0, 0, 800, 600);
-                        gl::Clear(gl::COLOR_BUFFER_BIT);
                     } // De momento el eje se define por algoritmo
                     // TODO: Arreglar esto, si las coordenadas son numeros grandes el dibujo se desvanece
                     // dda_line(100.0, 100.0, -200.0, 200.0)
@@ -87,7 +86,6 @@ impl Window {
                 glfw::WindowEvent::Key(Key::I, _, Action::Press, _) => { // IZQ, DER
                     unsafe {
                         gl::Viewport(0, 0, 800, 600);
-                        gl::Clear(gl::COLOR_BUFFER_BIT);
                     } // De momento el eje se define por algoritmo
                     dda_line(-0.2, 0.0, -0.8, 0.9)
                 },

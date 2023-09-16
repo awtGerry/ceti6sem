@@ -13,7 +13,7 @@ fn main() {
         unsafe {
             gl::ClearColor(0.0, 0.0, 0.0, 1.0); // black background
             // gl::Clear(gl::COLOR_BUFFER_BIT);
-            gl::LineWidth(2.0);
+            // gl::LineWidth(2.0);
             gl::DrawArrays(gl::LINES, 0, 5);
         }
 

@@ -1,3 +1,5 @@
+use gl::types::GLsizei;
+
 // use crate::window::Window;
 use crate::wrapper::*;
 
@@ -27,7 +29,7 @@ fn set_vao_vbo(cordenates: &[f32], size: i32) {
         size,
         gl::FLOAT,
         gl::FALSE,
-        size * std::mem::size_of::<f32>() as i32,
+        (size * std::mem::size_of::<f32>()) as GLsizei,
         ptr::null(),
     );
     position_attrib.enable();
@@ -118,6 +120,8 @@ pub fn draw_rectangle(x1: f32, y1: f32, x2: f32, y2: f32) {
     dda_line(x2, y1, x2, y2);
     dda_line(x2, y2, x1, y2);
     dda_line(x1, y2, x1, y1);
+
+    // gl::CreateShader(gl::VERTEX_SHADER);
 
     let cordenates: [f32; 12] = [
         x1, y1, 0.0, x2, y1, 0.0, x2, y2, 0.0, x1, y2, 0.0,
