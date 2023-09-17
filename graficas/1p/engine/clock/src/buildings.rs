@@ -7,12 +7,9 @@ use gl::types::*;
 fn build_clock_tower() {
     let shader = Shader::new("clock/shaders/black.shader.vs", "clock/shaders/black.shader.fs");
     unsafe {
+        shader.bind();
         figures::draw_rectangle_fill(-0.9, 0.0, -0.45, -1.0);
         figures::draw_rectangle_fill(-0.85, -1.0, -0.5, 0.15);
-        shader.bind();
-        // let (shader_program, vao) = shaders();
-        // gl::UseProgram(shader_program);
-        // gl::BindVertexArray(vao);
 
         // LIGHTS HERE
 
