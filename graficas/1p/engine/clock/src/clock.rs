@@ -1,10 +1,9 @@
-use engine::graphics::shader::Shader;
-use engine::graphics::wrapper::*;
+// use engine::graphics::shader::Shader;
+// use engine::graphics::wrapper::*;
 
-use crate::figures::{draw_circle, draw_line, set_vao_vbo};
+use crate::figures::draw_circle_fill;
 
-fn draw_clock() {
-    unsafe {
-        draw_circle(200.0, 200.0, 100.0);
-    }
+// Clock design
+pub fn draw_clock() {
+    draw_circle_fill(165.0, 300.0, 60.0);
 }

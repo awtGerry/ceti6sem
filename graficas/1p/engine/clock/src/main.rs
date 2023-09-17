@@ -2,6 +2,7 @@ use engine::graphics::window::Window;
 
 mod figures;
 mod buildings;
+mod clock;
 
 const WIDTH: u32 = 1000;
 const HEIGHT: u32 = 768;
@@ -12,14 +13,11 @@ fn main() {
     window.init();
     while !window.should_close() {
         unsafe {
-            // Blue sky background
-            gl::ClearColor(0.19, 0.24, 0.98, 1.0);
+            gl::ClearColor(0.11, 0.16, 0.38, 1.0);
             gl::Clear(gl::COLOR_BUFFER_BIT);
-            // gl::UseProgram(shader_program);
-            // gl::BindVertexArray(vao);
             buildings::draw_buildings();
-            // MOON
-            figures::draw_circle(500.0, 500.0, 200.0);
+            figures::draw_circle_fill(580.0, 500.0, 200.0);
+            clock::draw_clock();
         }
         window.update();
     }

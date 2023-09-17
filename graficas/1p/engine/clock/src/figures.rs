@@ -81,6 +81,7 @@ pub fn draw_triangle(x1: f32, y1: f32, x2: f32, y2: f32, x3: f32) {
     }
 }
 
+#[allow(unused)]
 pub fn draw_circle(xc: f32, yc: f32, r: f32) {
     let mut x = 0.0;
     let mut y = r;
@@ -107,8 +108,27 @@ pub fn draw_circle(xc: f32, yc: f32, r: f32) {
     }
 }
 
+// TODO: There is a bug in this function, it will draw and fill the circle
+//       but at compile/start time it will have a weird behavior, fix that.
 pub fn draw_circle_fill(xc: f32, yc: f32, r: f32) {
-    unsafe {
+    let mut x = 0.0;
+    let mut y = r;
+
+    let mut d = 1.0 - r;
+
+    while x < y {
+        draw_line(xc + x, yc + y, xc - x, yc + y);
+        draw_line(xc + y, yc + x, xc - y, yc + x);
+        draw_line(xc + x, yc - y, xc - x, yc - y);
+        draw_line(xc + y, yc - x, xc - y, yc - x);
+
+        if d < 0.0 {
+            d += 2.0 * x + 3.0;
+        } else {
+            d += 2.0 * (x - y) + 5.0;
+            y -= 1.0;
+        }
+        x += 1.0;
     }
 }
 
