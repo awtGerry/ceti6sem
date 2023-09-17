@@ -1,9 +1,7 @@
 use engine::graphics::wrapper::*;
-use engine::graphics::shader::*;
 
 #[allow(unused_imports)]
 use std::{mem, ptr};
-use std::os::raw::c_void;
 use gl::types::*;
 
 fn set_vao_vbo(vao: &Vao, vbo: &Buffer, vertices: &[f32], size: usize) {
