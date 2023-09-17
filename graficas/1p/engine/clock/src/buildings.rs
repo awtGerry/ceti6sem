@@ -1,9 +1,18 @@
+use engine::graphics::shader::Shader;
+
 use crate::figures;
 
-pub fn build_clock_tower() {
+use gl::types::*;
+
+fn build_clock_tower() {
+    let shader = Shader::new("clock/shaders/black.shader.vs", "clock/shaders/black.shader.fs");
     unsafe {
         figures::draw_rectangle_fill(-0.9, 0.0, -0.45, -1.0);
         figures::draw_rectangle_fill(-0.85, -1.0, -0.5, 0.15);
+        shader.bind();
+        // let (shader_program, vao) = shaders();
+        // gl::UseProgram(shader_program);
+        // gl::BindVertexArray(vao);
 
         // LIGHTS HERE
 
@@ -46,7 +55,7 @@ pub fn build_clock_tower() {
     }
 }
 
-pub fn build_houses() {
+fn build_houses() {
     unsafe {
         figures::draw_rectangle_fill(-0.45, -1.0, -0.25, -0.8);
         figures::draw_rectangle_fill(0.1, -1.0, 0.4, -0.65);
@@ -72,4 +81,9 @@ pub fn build_houses() {
         figures::draw_rectangle_fill(0.67, -0.5, 0.72, -0.41);
         figures::draw_triangle(0.67, -0.41, 0.72, -0.33, 0.695);
     }
+}
+
+pub fn draw_buildings() {
+    build_clock_tower();
+    build_houses();
 }

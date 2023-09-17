@@ -4,7 +4,7 @@ use engine::graphics::wrapper::*;
 use std::{mem, ptr};
 use gl::types::*;
 
-fn set_vao_vbo(vao: &Vao, vbo: &Buffer, vertices: &[f32], size: usize) {
+pub fn set_vao_vbo(vao: &Vao, vbo: &Buffer, vertices: &[f32], size: usize) {
     vao.bind();
     vbo.bind();
     vbo.buffer_data(vertices);
@@ -21,13 +21,13 @@ fn set_vao_vbo(vao: &Vao, vbo: &Buffer, vertices: &[f32], size: usize) {
 }
 pub fn draw_pixel(x: i32, y: i32) {
     unsafe {
-        gl::DrawArrays(gl::POINTS, 0, 2);
+        gl::DrawArrays(gl::POINTS, x, y);
         gl::Enable(gl::SCISSOR_TEST);
         gl::Scissor(x, y, 1, 1);
-        // gl::ClearColor(0.0, 0.0, 1.0, 0.0);
-        // gl::Clear(gl::COLOR_BUFFER_BIT);
+        gl::ClearColor(1.0, 1.0, 1.0, 1.0);
+        gl::Clear(gl::COLOR_BUFFER_BIT);
         gl::Disable(gl::SCISSOR_TEST);
-        gl::DrawArrays(gl::LINES, 0, 5);
+        // gl::DrawArrays(gl::LINES, 0, 5);
     }
 }
 
@@ -81,9 +81,36 @@ pub fn draw_triangle(x1: f32, y1: f32, x2: f32, y2: f32, x3: f32) {
     }
 }
 
+pub fn draw_circle(xc: f32, yc: f32, r: f32) {
+    let mut x = 0.0;
+    let mut y = r;
 
-// pub fn draw_circle() {
-// }
+    let mut d = 1.0 - r;
+
+    while x < y {
+        draw_pixel(xc as i32 + x as i32, yc as i32 + y as i32);
+        draw_pixel(xc as i32 + y as i32, yc as i32 + x as i32);
+        draw_pixel(xc as i32 - x as i32, yc as i32 + y as i32);
+        draw_pixel(xc as i32 - y as i32, yc as i32 + x as i32);
+        draw_pixel(xc as i32 + x as i32, yc as i32 - y as i32);
+        draw_pixel(xc as i32 + y as i32, yc as i32 - x as i32);
+        draw_pixel(xc as i32 - x as i32, yc as i32 - y as i32);
+        draw_pixel(xc as i32 - y as i32, yc as i32 - x as i32);
+
+        if d < 0.0 {
+            d += 2.0 * x + 3.0;
+        } else {
+            d += 2.0 * (x - y) + 5.0;
+            y -= 1.0;
+        }
+        x += 1.0;
+    }
+}
+
+pub fn draw_circle_fill(xc: f32, yc: f32, r: f32) {
+    unsafe {
+    }
+}
 
 #[allow(unused)]
 pub fn draw_rectangle(x1: f32, y1: f32, x2: f32, y2: f32) {
