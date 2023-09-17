@@ -1,8 +1,7 @@
-/*
-   *** Steepest descent algorithm ***
-   x_k+1 = x_k - alpha_k * grad(f(x_k))
-*/
-
-fn main() {
-    println!("Hello, world!");
+fn rosen(x: f32, n: usize) -> f32 {
+    let mut dx = 0.0;
+    let mut sum = 0.0;
+    for i in 0..n {
+        dx = x
+    }
 }

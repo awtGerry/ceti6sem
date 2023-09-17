@@ -35,7 +35,6 @@ fn set_vao_vbo(cordenates: &[f32], size: i32) {
     position_attrib.enable();
 }
 
-
 pub fn dda_line(x1: f32, y1: f32, x2: f32, y2: f32) {
     let cordenates: [f32; 4] = [x1, y1, x2, y2];
 
@@ -120,8 +119,6 @@ pub fn draw_rectangle(x1: f32, y1: f32, x2: f32, y2: f32) {
     dda_line(x2, y1, x2, y2);
     dda_line(x2, y2, x1, y2);
     dda_line(x1, y2, x1, y1);
-
-    // gl::CreateShader(gl::VERTEX_SHADER);
 
     let cordenates: [f32; 12] = [
         x1, y1, 0.0, x2, y1, 0.0, x2, y2, 0.0, x1, y2, 0.0,
