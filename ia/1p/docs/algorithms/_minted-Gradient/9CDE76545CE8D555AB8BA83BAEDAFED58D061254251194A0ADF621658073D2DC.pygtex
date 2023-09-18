@@ -1,0 +1,66 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kn}{import} \PYG{n+nn}{numpy} \PYG{k}{as} \PYG{n+nn}{np}
+
+\PYG{k}{def} \PYG{n+nf}{sr1}\PYG{p}{(}\PYG{n}{objfun}\PYG{p}{,} \PYG{n}{gradient}\PYG{p}{,} \PYG{n}{init}\PYG{p}{,} \PYG{n}{tolerance}\PYG{o}{=}\PYG{l+m+mf}{1e\PYGZhy{}6}\PYG{p}{,} \PYG{n}{maxiter}\PYG{o}{=}\PYG{l+m+mi}{10000}\PYG{p}{):}
+    \PYG{n}{x} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{array}\PYG{p}{(}\PYG{n}{init}\PYG{p}{)}
+    \PYG{n}{iterno} \PYG{o}{=} \PYG{l+m+mi}{0}
+    \PYG{n}{B} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{identity}\PYG{p}{(}\PYG{l+m+mi}{2}\PYG{p}{)}
+    \PYG{n}{xarray} \PYG{o}{=} \PYG{p}{[}\PYG{n}{x}\PYG{p}{]}
+    \PYG{n}{fprev} \PYG{o}{=} \PYG{n}{objfun}\PYG{p}{(}\PYG{n}{x}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{],}\PYG{n}{x}\PYG{p}{[}\PYG{l+m+mi}{1}\PYG{p}{])}
+    \PYG{n}{farray} \PYG{o}{=} \PYG{p}{[}\PYG{n}{fprev}\PYG{p}{]}
+    \PYG{n}{gprev} \PYG{o}{=} \PYG{n}{gradient}\PYG{p}{(}\PYG{n}{x}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{],}\PYG{n}{x}\PYG{p}{[}\PYG{l+m+mi}{1}\PYG{p}{])}
+    \PYG{n}{xtmp} \PYG{o}{=} \PYG{n}{x} \PYG{o}{\PYGZhy{}} \PYG{l+m+mf}{0.01}\PYG{o}{*}\PYG{n}{gprev}\PYG{o}{/}\PYG{n}{np}\PYG{o}{.}\PYG{n}{sqrt}\PYG{p}{(}\PYG{n}{np}\PYG{o}{.}\PYG{n}{dot}\PYG{p}{(}\PYG{n}{gprev}\PYG{p}{,}\PYG{n}{gprev}\PYG{p}{))}
+    \PYG{n}{gcur} \PYG{o}{=} \PYG{n}{gradient}\PYG{p}{(}\PYG{n}{xtmp}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{],}\PYG{n}{xtmp}\PYG{p}{[}\PYG{l+m+mi}{1}\PYG{p}{])}
+    \PYG{n}{s} \PYG{o}{=} \PYG{n}{xtmp}\PYG{o}{\PYGZhy{}}\PYG{n}{x}
+    \PYG{n}{y} \PYG{o}{=} \PYG{n}{gcur}\PYG{o}{\PYGZhy{}}\PYG{n}{gprev}
+    \PYG{k}{while} \PYG{n}{iterno} \PYG{o}{\PYGZlt{}} \PYG{n}{maxiter}\PYG{p}{:}
+        \PYG{n}{r} \PYG{o}{=} \PYG{n}{y}\PYG{o}{\PYGZhy{}}\PYG{n}{np}\PYG{o}{.}\PYG{n}{dot}\PYG{p}{(}\PYG{n}{B}\PYG{p}{,}\PYG{n}{s}\PYG{p}{)}
+        \PYG{n}{B} \PYG{o}{=} \PYG{n}{B} \PYG{o}{+} \PYG{n}{np}\PYG{o}{.}\PYG{n}{outer}\PYG{p}{(}\PYG{n}{r}\PYG{p}{,}\PYG{n}{r}\PYG{p}{)}\PYG{o}{/}\PYG{n}{np}\PYG{o}{.}\PYG{n}{dot}\PYG{p}{(}\PYG{n}{r}\PYG{p}{,}\PYG{n}{s}\PYG{p}{)}
+        \PYG{n}{x} \PYG{o}{=} \PYG{n}{x} \PYG{o}{\PYGZhy{}} \PYG{n}{np}\PYG{o}{.}\PYG{n}{linalg}\PYG{o}{.}\PYG{n}{solve}\PYG{p}{(}\PYG{n}{B}\PYG{p}{,}\PYG{n}{gcur}\PYG{p}{)}
+        \PYG{n}{fcur} \PYG{o}{=} \PYG{n}{objfun}\PYG{p}{(}\PYG{n}{x}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{],} \PYG{n}{x}\PYG{p}{[}\PYG{l+m+mi}{1}\PYG{p}{])}
+        \PYG{k}{if} \PYG{n}{np}\PYG{o}{.}\PYG{n}{isnan}\PYG{p}{(}\PYG{n}{fcur}\PYG{p}{):}
+            \PYG{k}{break}
+        \PYG{n}{gprev} \PYG{o}{=} \PYG{n}{gcur}
+        \PYG{n}{gcur} \PYG{o}{=} \PYG{n}{gradient}\PYG{p}{(}\PYG{n}{x}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{],}\PYG{n}{x}\PYG{p}{[}\PYG{l+m+mi}{1}\PYG{p}{])}
+        \PYG{n}{xarray}\PYG{o}{.}\PYG{n}{append}\PYG{p}{(}\PYG{n}{x}\PYG{p}{)}
+        \PYG{n}{farray}\PYG{o}{.}\PYG{n}{append}\PYG{p}{(}\PYG{n}{fcur}\PYG{p}{)}
+        \PYG{k}{if} \PYG{n+nb}{abs}\PYG{p}{(}\PYG{n}{fcur}\PYG{o}{\PYGZhy{}}\PYG{n}{fprev}\PYG{p}{)}\PYG{o}{\PYGZlt{}}\PYG{n}{tolerance}\PYG{p}{:}
+            \PYG{k}{break}
+        \PYG{n}{fprev} \PYG{o}{=} \PYG{n}{fcur}
+        \PYG{n}{s} \PYG{o}{=} \PYG{n}{xarray}\PYG{p}{[}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{]}\PYG{o}{\PYGZhy{}}\PYG{n}{xarray}\PYG{p}{[}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{2}\PYG{p}{]}
+        \PYG{n}{y} \PYG{o}{=} \PYG{n}{gcur}\PYG{o}{\PYGZhy{}}\PYG{n}{gprev}
+        \PYG{n}{iterno} \PYG{o}{+=} \PYG{l+m+mi}{1}
+    \PYG{k}{return} \PYG{n}{np}\PYG{o}{.}\PYG{n}{array}\PYG{p}{(}\PYG{n}{xarray}\PYG{p}{),} \PYG{n}{np}\PYG{o}{.}\PYG{n}{array}\PYG{p}{(}\PYG{n}{farray}\PYG{p}{)}
+
+\PYG{c+c1}{\PYGZsh{} Creación de un conjunto de datos para entrenamiento}
+\PYG{n}{trX} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{linspace}\PYG{p}{(}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{2}\PYG{p}{,} \PYG{l+m+mi}{2}\PYG{p}{,} \PYG{l+m+mi}{101}\PYG{p}{)}
+\PYG{n}{trY} \PYG{o}{=} \PYG{l+m+mi}{3} \PYG{o}{+} \PYG{l+m+mi}{2} \PYG{o}{*} \PYG{n}{trX} \PYG{o}{+} \PYG{n}{np}\PYG{o}{.}\PYG{n}{random}\PYG{o}{.}\PYG{n}{randn}\PYG{p}{(}\PYG{o}{*}\PYG{n}{trX}\PYG{o}{.}\PYG{n}{shape}\PYG{p}{)} \PYG{o}{*} \PYG{l+m+mf}{0.33}
+
+\PYG{c+c1}{\PYGZsh{} Definición de los ajustes y parámetros iniciales}
+\PYG{n}{num\PYGZus{}steps} \PYG{o}{=} \PYG{l+m+mi}{100}
+\PYG{n}{learningRate} \PYG{o}{=} \PYG{l+m+mf}{0.10}
+\PYG{n}{criteria} \PYG{o}{=} \PYG{l+m+mf}{1e\PYGZhy{}8}
+\PYG{n}{b\PYGZus{}0} \PYG{o}{=} \PYG{l+m+mi}{1}
+\PYG{n}{b\PYGZus{}1} \PYG{o}{=} \PYG{l+m+mi}{1}
+
+\PYG{c+c1}{\PYGZsh{} Proceso iterativo}
+\PYG{k}{for} \PYG{n}{step} \PYG{o+ow}{in} \PYG{n+nb}{range}\PYG{p}{(}\PYG{l+m+mi}{0}\PYG{p}{,} \PYG{n}{num\PYGZus{}steps}\PYG{p}{):}
+    \PYG{n}{b\PYGZus{}0\PYGZus{}gradient} \PYG{o}{=} \PYG{l+m+mi}{0}
+    \PYG{n}{b\PYGZus{}1\PYGZus{}gradient} \PYG{o}{=} \PYG{l+m+mi}{0}
+    \PYG{n}{N} \PYG{o}{=} \PYG{n+nb}{float}\PYG{p}{(}\PYG{n+nb}{len}\PYG{p}{(}\PYG{n}{trX}\PYG{p}{))}
+
+    \PYG{k}{for} \PYG{n}{i} \PYG{o+ow}{in} \PYG{n+nb}{range}\PYG{p}{(}\PYG{l+m+mi}{0}\PYG{p}{,} \PYG{n+nb}{len}\PYG{p}{(}\PYG{n}{trX}\PYG{p}{)):}
+        \PYG{n}{b\PYGZus{}0\PYGZus{}gradient} \PYG{o}{\PYGZhy{}=} \PYG{p}{(}\PYG{l+m+mi}{2}\PYG{o}{/}\PYG{n}{N}\PYG{p}{)} \PYG{o}{*} \PYG{p}{(}\PYG{n}{trY}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]} \PYG{o}{\PYGZhy{}} \PYG{p}{(}\PYG{n}{b\PYGZus{}0} \PYG{o}{+} \PYG{n}{b\PYGZus{}1} \PYG{o}{*} \PYG{n}{trX}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]))}
+        \PYG{n}{b\PYGZus{}1\PYGZus{}gradient} \PYG{o}{\PYGZhy{}=} \PYG{p}{(}\PYG{l+m+mi}{2}\PYG{o}{/}\PYG{n}{N}\PYG{p}{)} \PYG{o}{*} \PYG{p}{(}\PYG{n}{trY}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]} \PYG{o}{\PYGZhy{}} \PYG{p}{(}\PYG{n}{b\PYGZus{}0} \PYG{o}{+} \PYG{n}{b\PYGZus{}1} \PYG{o}{*} \PYG{n}{trX}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]))} \PYG{o}{*} \PYG{n}{trX}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]}
+
+    \PYG{n}{b\PYGZus{}0} \PYG{o}{=} \PYG{n}{b\PYGZus{}0} \PYG{o}{\PYGZhy{}} \PYG{p}{(}\PYG{n}{learningRate} \PYG{o}{*} \PYG{n}{b\PYGZus{}0\PYGZus{}gradient}\PYG{p}{)}
+    \PYG{n}{b\PYGZus{}1} \PYG{o}{=} \PYG{n}{b\PYGZus{}1} \PYG{o}{\PYGZhy{}} \PYG{p}{(}\PYG{n}{learningRate} \PYG{o}{*} \PYG{n}{b\PYGZus{}1\PYGZus{}gradient}\PYG{p}{)}
+
+    \PYG{k}{if} \PYG{n+nb}{max}\PYG{p}{(}\PYG{n+nb}{abs}\PYG{p}{(}\PYG{n}{learningRate} \PYG{o}{*} \PYG{n}{b\PYGZus{}0\PYGZus{}gradient}\PYG{p}{),} \PYG{n+nb}{abs}\PYG{p}{(}\PYG{n}{learningRate} \PYG{o}{*} \PYG{n}{b\PYGZus{}1\PYGZus{}gradient}\PYG{p}{))} \PYG{o}{\PYGZlt{}} \PYG{n}{criteria}\PYG{p}{:}
+        \PYG{k}{break}
+
+\PYG{c+c1}{\PYGZsh{} Impresión de los resultados}
+\PYG{n+nb}{print}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}Los valores que se obtienen son:\PYGZdq{}}\PYG{p}{,} \PYG{n}{b\PYGZus{}0}\PYG{p}{,} \PYG{n}{b\PYGZus{}1}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}en pasos\PYGZdq{}}\PYG{p}{,} \PYG{n}{step}\PYG{p}{)}
+
+\PYG{c+c1}{\PYGZsh{} + El código de la función de gradiente proporcionada por el profesor.}
+\end{Verbatim}

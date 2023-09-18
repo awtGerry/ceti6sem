@@ -68,7 +68,6 @@ impl Window {
                 glfw::WindowEvent::Key(Key::X, _, Action::Press, _) => { // DER, IZQ
                     unsafe {
                         gl::Viewport(0, 0, 800, 600);
-                        gl::Clear(gl::COLOR_BUFFER_BIT);
                     }
                     draw_pixel(0, 0);
                 },
@@ -92,14 +91,12 @@ impl Window {
                 glfw::WindowEvent::Key(Key::B, _, Action::Press, _) => {
                     unsafe {
                         gl::Viewport(-400, -300, 800, 600);
-                        gl::Clear(gl::COLOR_BUFFER_BIT);
                     } // De momento el eje se define por algoritmo
                     bresenham_line(0.9, 0.9, 0.9, 0.9) // Decimales como enteros por el momento
                 },
                 glfw::WindowEvent::Key(Key::R, _, Action::Press, _) => {
                     unsafe {
                         gl::Viewport(0, 0, 800, 600);
-                        gl::Clear(gl::COLOR_BUFFER_BIT);
                     } // De momento el eje se define por algoritmo
                     draw_rectangle(0.5, 0.5, -0.5, -0.5)
                 },
@@ -109,21 +106,18 @@ impl Window {
                 glfw::WindowEvent::Key(Key::C, _, Action::Press, _) => {
                     unsafe {
                         gl::Viewport(0, 0, 800, 600);
-                        gl::Clear(gl::COLOR_BUFFER_BIT);
                     } // De momento el eje se define por algoritmo
                     draw_circle(20.0, 200.0, 100.0, 200.0)
                 },
                 glfw::WindowEvent::Key(Key::M, _, Action::Press, _) => {
                     unsafe {
                         gl::Viewport(0, 0, 800, 600);
-                        gl::Clear(gl::COLOR_BUFFER_BIT);
                     } // De momento el eje se define por algoritmo
                     draw_mid_point_circle(200.0, 200.0, 100.0)
                 },
                 glfw::WindowEvent::Key(Key::P, _, Action::Press, _) => {
                     unsafe {
                         gl::Viewport(0, 0, 800, 600);
-                        gl::Clear(gl::COLOR_BUFFER_BIT);
                     } // De momento el eje se define por algoritmo
                     polar_circle(20.0, 200.0, 100.0, 200.0)
                 },
@@ -132,7 +126,6 @@ impl Window {
                 glfw::WindowEvent::Key(Key::E, _, Action::Press, _) => {
                     unsafe {
                         gl::Viewport(0, 0, 800, 600);
-                        gl::Clear(gl::COLOR_BUFFER_BIT);
                     } // De momento el eje se define por algoritmo
                     ellipse(200.0, 200.0, 100.0, 50.0)
                 },
