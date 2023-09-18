@@ -27,7 +27,7 @@ pub fn draw_pixel(x: i32, y: i32) {
         gl::ClearColor(1.0, 1.0, 1.0, 1.0);
         gl::Clear(gl::COLOR_BUFFER_BIT);
         gl::Disable(gl::SCISSOR_TEST);
-        // gl::DrawArrays(gl::LINES, 0, 5);
+        gl::DrawArrays(gl::LINES, 0, 5);
     }
 }
 
@@ -51,10 +51,65 @@ pub fn draw_line(x1: f32, y1: f32, x2: f32, y2: f32) { // DDA
     for _ in 0..steps as i32 {
         draw_pixel(x as i32, y as i32);
         unsafe {
-            gl::DrawArrays(gl::LINES, 0, 5);
+            gl::DrawArrays(gl::LINES, 0, 2);
         }
         x += x_inc;
         y += y_inc;
+    }
+}
+
+// For some reason if the line is too small it will not be drawn, so this will draw only small lines
+#[allow(unused)]
+pub fn draw_small_line(x1: f32, y1: f32, x2: f32, y2: f32) {
+    let vao = Vao::new();
+    let vbo = Buffer::new(gl::ARRAY_BUFFER, gl::STATIC_DRAW);
+
+    set_vao_vbo(&vao, &vbo, &[x1, y1, x2, y2], 2);
+
+    unsafe {
+        gl::DrawArrays(gl::LINES, 0, 2);
+    }
+}
+
+#[allow(unused)]
+pub fn bresenham_line(x1: f32, y1: f32, x2: f32, y2: f32) {
+    let vao = Vao::new();
+    let vbo = Buffer::new(gl::ARRAY_BUFFER, gl::STATIC_DRAW);
+    set_vao_vbo(&vao, &vbo, &[x1, y1, x2, y2], 4);
+
+    let mut dx = x2 - x1;
+    let mut dy = y2 - y1;
+
+    let mut x = x1 as f32;
+    let mut y = y1 as f32;
+
+    let mut p = 2.0 * dy - dx;
+
+    let mut inc_x = 1.0;
+    let mut inc_y = 1.0;
+
+    if dx < 0.0 {
+        inc_x.clone_from(&-1.0);
+        dx = -dx;
+    }
+
+    if dy < 0.0 {
+        inc_y.clone_from(&-1.0);
+        dy = -dy;
+    }
+
+    draw_pixel(x as i32, y as i32);
+
+    while x < x2 {
+        if p >= 0.0 {
+            draw_pixel(x as i32, y as i32);
+            y += 1.0;
+            p += 2.0 * dy - 2.0 * dx;
+        } else {
+            draw_pixel(x as i32, y as i32);
+            p += 2.0 * dy;
+        }
+        x += 1.0;
     }
 }
 
@@ -110,6 +165,7 @@ pub fn draw_circle(xc: f32, yc: f32, r: f32) {
 
 // TODO: There is a bug in this function, it will draw and fill the circle
 //       but at compile/start time it will have a weird behavior, fix that.
+#[allow(unused)]
 pub fn draw_circle_fill(xc: f32, yc: f32, r: f32) {
     let mut x = 0.0;
     let mut y = r;

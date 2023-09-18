@@ -2,8 +2,6 @@ use engine::graphics::shader::Shader;
 
 use crate::figures;
 
-use gl::types::*;
-
 fn build_clock_tower() {
     let shader = Shader::new("clock/shaders/black.shader.vs", "clock/shaders/black.shader.fs");
     unsafe {

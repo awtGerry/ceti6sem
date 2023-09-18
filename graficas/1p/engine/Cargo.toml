@@ -9,8 +9,10 @@ path = "clock/src/main.rs"
 
 [dependencies]
 cgmath = "0.18.0"
+chrono = "0.4.31"
 gl = "0.14.0"
 glfw = "0.52.0"
 # image = "0.24.7"
 image = "0.19.0"
+rand = "0.8.5"
 thiserror = "1.0.48"
