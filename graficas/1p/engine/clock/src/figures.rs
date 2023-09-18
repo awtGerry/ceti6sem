@@ -71,47 +71,10 @@ pub fn draw_small_line(x1: f32, y1: f32, x2: f32, y2: f32) {
     }
 }
 
-#[allow(unused)]
-pub fn bresenham_line(x1: f32, y1: f32, x2: f32, y2: f32) {
-    let vao = Vao::new();
-    let vbo = Buffer::new(gl::ARRAY_BUFFER, gl::STATIC_DRAW);
-    set_vao_vbo(&vao, &vbo, &[x1, y1, x2, y2], 4);
-
-    let mut dx = x2 - x1;
-    let mut dy = y2 - y1;
-
-    let mut x = x1 as f32;
-    let mut y = y1 as f32;
-
-    let mut p = 2.0 * dy - dx;
-
-    let mut inc_x = 1.0;
-    let mut inc_y = 1.0;
-
-    if dx < 0.0 {
-        inc_x.clone_from(&-1.0);
-        dx = -dx;
-    }
-
-    if dy < 0.0 {
-        inc_y.clone_from(&-1.0);
-        dy = -dy;
-    }
-
-    draw_pixel(x as i32, y as i32);
-
-    while x < x2 {
-        if p >= 0.0 {
-            draw_pixel(x as i32, y as i32);
-            y += 1.0;
-            p += 2.0 * dy - 2.0 * dx;
-        } else {
-            draw_pixel(x as i32, y as i32);
-            p += 2.0 * dy;
-        }
-        x += 1.0;
-    }
+pub fn draw_line_from_angle(x1: f32, y1: f32, angle: f32) {
+    draw_line(x1, y1, x1 * angle.cos(), y1 * angle.sin());
 }
+
 
 pub fn draw_triangle(x1: f32, y1: f32, x2: f32, y2: f32, x3: f32) {
     let vertices: [f32; 9] = [

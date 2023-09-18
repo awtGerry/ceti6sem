@@ -16,12 +16,6 @@ const HEIGHT: u32 = 768;
 fn main() {
     let mut window = Window::new(WIDTH, HEIGHT, "Clock");
 
-    // HOURS
-    let hour = chrono::Timelike::hour(&Local::now());
-    println!("Hour: {}", hour);
-    let minute = chrono::Timelike::minute(&Local::now());
-    println!("Minute: {}", minute);
-
     window.init();
     let (new_shader, vbo, vao, ebo, texture) = textures::bg_texture();
     while !window.should_close() {
@@ -36,7 +30,7 @@ fn main() {
 
             gl::BindVertexArray(vao);
             buildings::draw_buildings();
-            clock::draw_clock(hour, minute);
+            clock::draw_clock();
         }
         window.update();
     }
