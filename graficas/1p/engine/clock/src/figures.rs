@@ -58,7 +58,6 @@ pub fn draw_line(x1: f32, y1: f32, x2: f32, y2: f32) { // DDA
     }
 }
 
-// For some reason if the line is too small it will not be drawn, so this will draw only small lines
 #[allow(unused)]
 pub fn draw_small_line(x1: f32, y1: f32, x2: f32, y2: f32) {
     let vao = Vao::new();
@@ -71,10 +70,15 @@ pub fn draw_small_line(x1: f32, y1: f32, x2: f32, y2: f32) {
     }
 }
 
-pub fn draw_line_from_angle(x1: f32, y1: f32, angle: f32) {
-    draw_line(x1, y1, x1 * angle.cos(), y1 * angle.sin());
-}
+#[allow(unused)]
+pub fn draw_polar_hand(x1: f32, y1: f32, length: f32, angle: f32) {
+    let angle = angle.to_radians();
 
+    let x2 = x1 + length * angle.cos();
+    let y2 = y1 - length * angle.sin();
+
+    draw_small_line(x1, y1, x2, y2);
+}
 
 pub fn draw_triangle(x1: f32, y1: f32, x2: f32, y2: f32, x3: f32) {
     let vertices: [f32; 9] = [
