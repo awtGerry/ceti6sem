@@ -59,7 +59,7 @@ pub fn draw_line(x1: f32, y1: f32, x2: f32, y2: f32) { // DDA
 }
 
 #[allow(unused)]
-pub fn draw_small_line(x1: f32, y1: f32, x2: f32, y2: f32) {
+fn draw_small_line(x1: f32, y1: f32, x2: f32, y2: f32) {
     let vao = Vao::new();
     let vbo = Buffer::new(gl::ARRAY_BUFFER, gl::STATIC_DRAW);
 
@@ -138,6 +138,10 @@ pub fn draw_circle_fill(xc: f32, yc: f32, r: f32) {
     let mut y = r;
 
     let mut d = 1.0 - r;
+
+    let coord: [f32; 2] = [
+        xc, yc,
+    ];
 
     while x < y {
         draw_line(xc + x, yc + y, xc - x, yc + y);

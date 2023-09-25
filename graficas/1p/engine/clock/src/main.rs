@@ -7,9 +7,6 @@ mod clock;
 
 use std::ptr;
 
-extern crate chrono;
-use chrono::Local;
-
 const WIDTH: u32 = 1000;
 const HEIGHT: u32 = 768;
 
@@ -23,12 +20,13 @@ fn main() {
             // Blue sky background
             gl::ClearColor(0.0, 0.0, 0.0, 1.0);
             gl::Clear(gl::COLOR_BUFFER_BIT);
+
             gl::BindTexture(gl::TEXTURE_2D, texture);
             new_shader.bind();
             gl::BindVertexArray(vao);
             gl::DrawElements(gl::TRIANGLES, 6, gl::UNSIGNED_INT, ptr::null());
-
             gl::BindVertexArray(vao);
+
             buildings::draw_buildings();
             clock::draw_clock();
         }

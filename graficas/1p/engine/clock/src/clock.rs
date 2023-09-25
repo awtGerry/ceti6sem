@@ -1,9 +1,7 @@
-// use engine::graphics::shader::Shader;
-// use engine::graphics::wrapper::*;
-
 #[allow(unused_imports)]
-use crate::figures;
 use engine::graphics::shader::Shader;
+
+use crate::figures;
 
 extern crate gl;
 
@@ -30,7 +28,7 @@ fn clock_hours() {
     hours = (hours as f32 * 30.0) - 90.0;
 
     unsafe {
-        gl::LineWidth(2.0);
+        gl::LineWidth(4.0);
 
         let shader = Shader::new("clock/shaders/red.shader.vs", "clock/shaders/red.shader.fs");
         shader.bind();
