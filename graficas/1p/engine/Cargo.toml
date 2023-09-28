@@ -7,6 +7,10 @@ edition = "2021"
 name = "clock"
 path = "clock/src/main.rs"
 
+[[example]]
+name = "class"
+path = "testing/src/main.rs"
+
 [dependencies]
 cgmath = "0.18.0"
 chrono = "0.4.31"

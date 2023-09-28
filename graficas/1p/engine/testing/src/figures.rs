@@ -4,6 +4,7 @@ use engine::graphics::wrapper::*;
 use std::{mem, ptr};
 use gl::types::*;
 
+#[allow(unused)]
 pub fn set_vao_vbo(vao: &Vao, vbo: &Buffer, vertices: &[f32], size: usize) {
     vao.bind();
     vbo.bind();
@@ -19,6 +20,8 @@ pub fn set_vao_vbo(vao: &Vao, vbo: &Buffer, vertices: &[f32], size: usize) {
     );
     position_attrib_location.enable();
 }
+
+#[allow(unused)]
 pub fn draw_pixel(x: i32, y: i32) {
     unsafe {
         gl::DrawArrays(gl::POINTS, x, y);
@@ -31,6 +34,7 @@ pub fn draw_pixel(x: i32, y: i32) {
     }
 }
 
+#[allow(unused)]
 pub fn draw_line(x1: f32, y1: f32, x2: f32, y2: f32) { // DDA
     let vao = Vao::new();
     let vbo = Buffer::new(gl::ARRAY_BUFFER, gl::STATIC_DRAW);
@@ -59,7 +63,7 @@ pub fn draw_line(x1: f32, y1: f32, x2: f32, y2: f32) { // DDA
 }
 
 #[allow(unused)]
-fn draw_small_line(x1: f32, y1: f32, x2: f32, y2: f32) {
+pub fn draw_small_line(x1: f32, y1: f32, x2: f32, y2: f32) {
     let vao = Vao::new();
     let vbo = Buffer::new(gl::ARRAY_BUFFER, gl::STATIC_DRAW);
 
@@ -80,6 +84,7 @@ pub fn draw_polar_hand(x1: f32, y1: f32, length: f32, angle: f32) {
     draw_small_line(x1, y1, x2, y2);
 }
 
+#[allow(unused)]
 pub fn draw_triangle(x1: f32, y1: f32, x2: f32, y2: f32, x3: f32) {
     let vertices: [f32; 9] = [
         // Positions
@@ -130,18 +135,12 @@ pub fn draw_circle(xc: f32, yc: f32, r: f32) {
     }
 }
 
-// TODO: There is a bug in this function, it will draw and fill the circle
-//       but at compile/start time it will have a weird behavior, fix that.
 #[allow(unused)]
 pub fn draw_circle_fill(xc: f32, yc: f32, r: f32) {
     let mut x = 0.0;
     let mut y = r;
 
     let mut d = 1.0 - r;
-
-    let coord: [f32; 2] = [
-        xc, yc,
-    ];
 
     while x < y {
         draw_line(xc + x, yc + y, xc - x, yc + y);
@@ -167,32 +166,35 @@ pub fn draw_rectangle(x1: f32, y1: f32, x2: f32, y2: f32) {
     draw_line(x2, y1, x2, y2);
 }
 
-pub fn draw_rectangle_fill(x1: f32, y1: f32, x2: f32, y2: f32) {
-    let cordenates: [f32; 12] = [
-        // Positions
-        x1, y1, 0.0,
-        x2, y1, 0.0,
-        x1, y2, 0.0,
-        x2, y2, 0.0,
-    ];
-    let indices: [u32; 6] = [
-        0, 1, 2,
-        1, 2, 3,
-    ];
-
-    let vao = Vao::new();
-    let vbo = Buffer::new(gl::ARRAY_BUFFER, gl::STATIC_DRAW);
-    set_vao_vbo(&vao, &vbo, &cordenates, 3);
-    let ebo = Buffer::new(gl::ELEMENT_ARRAY_BUFFER, gl::STATIC_DRAW);
-    ebo.bind();
-    ebo.buffer_data(&indices);
-
-    unsafe {
-        gl::DrawElements(gl::TRIANGLES, 6, gl::UNSIGNED_INT, ptr::null());
-    }
-}
+#[allow(unused)]
+// pub fn draw_rectangle_fill(x1: f32, y1: f32, x2: f32, y2: f32) {
+//     let cordenates: [f32; 12] = [
+//         // Positions
+//         x1, y1, 0.0,
+//         x2, y1, 0.0,
+//         x1, y2, 0.0,
+//         x2, y2, 0.0,
+//     ];
+//
+//     let indices: [u32; 6] = [
+//         0, 1, 2,
+//         1, 2, 3,
+//     ];
+//
+//     let vao = Vao::new();
+//     let vbo = Buffer::new(gl::ARRAY_BUFFER, gl::STATIC_DRAW);
+//     set_vao_vbo(&vao, &vbo, &cordenates, 3);
+//     let ebo = Buffer::new(gl::ELEMENT_ARRAY_BUFFER, gl::STATIC_DRAW);
+//     ebo.bind();
+//     ebo.buffer_data(&indices);
+//
+//     unsafe {
+//         gl::DrawElements(gl::TRIANGLES, 6, gl::UNSIGNED_INT, ptr::null());
+//     }
+// }
 
 // This will draw the roof of the tower, is a bit more complex so it has its own function
+#[allow(unused)]
 pub fn draw_roof(x1: f32, y1: f32, x2: f32, y2: f32, x3: f32, x4: f32) {
     let cordenates: [f32; 12] = [
         // Positions
@@ -215,5 +217,14 @@ pub fn draw_roof(x1: f32, y1: f32, x2: f32, y2: f32, x3: f32, x4: f32) {
 
     unsafe {
         gl::DrawElements(gl::TRIANGLES, 6, gl::UNSIGNED_INT, ptr::null());
+    }
+}
+
+#[allow(unused)]
+pub fn scan_line(ax: f32, by: f32) {
+    let mut varx: f32 = ax;
+    for i in 0..1000 as i32 {
+        varx += 0.001;
+        draw_line(varx, ax, varx, by);
     }
 }
