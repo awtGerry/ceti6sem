@@ -8,8 +8,8 @@ name = "clock"
 path = "clock/src/main.rs"
 
 [[example]]
-name = "class"
-path = "testing/src/main.rs"
+name = "test"
+path = "examples/test.rs"
 
 [dependencies]
 cgmath = "0.18.0"
