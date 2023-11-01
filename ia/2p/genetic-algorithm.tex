@@ -49,9 +49,9 @@ La solucion se implemento en Rust.
 use rand::Rng;
 use std::collections::BinaryHeap;
 
-const TARGET_STRING: &str = "1101101101"; // The target binary string we want to evolve towards
-const POPULATION_SIZE: usize = 10; // Size of the population
-const MUTATION_RATE: f64 = 0.00001; // Probability of a gene mutation
+const TARGET_STRING: &str = "1101101101";
+const POPULATION_SIZE: usize = 10;
+const MUTATION_RATE: f64 = 0.00001;
 
 fn main()
 {
@@ -193,6 +193,10 @@ fn mutate(child: &str) -> String
         .collect()
 }
 \end{minted}
+\section{Evidencia}
+\begin{center}
+    \includegraphics[width=0.8\textwidth]{/home/gerry/Pictures/screenshots/window/screenshot2023-10-29_16:37-50.png}
+\end{center}
 
 \section{Numero de iteraciones}
 El algoritmo genético se ejecutó durante varias generaciones hasta alcanzar la cadena objetivo.

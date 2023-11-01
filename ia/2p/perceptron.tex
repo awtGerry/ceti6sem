@@ -1,0 +1,142 @@
+\documentclass{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[english]{babel}
+\usepackage[document]{ragged2e}
+
+\usepackage{amsfonts}
+\usepackage{natbib}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{graphicx}
+
+\usepackage[fleqn]{amsmath}
+\usepackage{amssymb}
+
+\usepackage{minted}
+
+\title{Perceptron compuertas lógicas}
+\author{Victor Gerardo Rodríguez Barragán}
+\date{29 de Octubre de 2023}
+
+\begin{document}
+\maketitle
+\begin{center}
+    \includegraphics[width=0.8\textwidth]{/home/gerry/Documents/ceti/cetilogo.jpg}
+\end{center}
+
+\newpage
+\justify
+\section{Descripcion del ejercicio y solucion}
+\subsection{Ejericio}
+El ejercicio se centra en la implementación y entrenamiento de un perceptrón para resolver
+la compuerta lógica AND. Una compuerta AND es una operación lógica que toma dos entradas
+booleanas (0 o 1) y devuelve una salida que es 1 solo cuando ambas entradas son 1;
+de lo contrario, devuelve 0. El objetivo del perceptrón es aprender una función que pueda replicar
+este comportamiento lógico.
+\subsection{Solucion}
+\begin{enumerate}
+\item \textbf{Inicializacion:} Se inicializan de manera aleatoria los pesos y el bias con una tasa fija
+        de aprendizaje de 0.01.
+\item \textbf{Funcion de activacion:} Se utiliza una función de activación simple que activa la salida si la suma ponderada de las entradas es mayor que cero. La función de activación devuelve 1 en ese caso y 0 en caso contrario.
+\item \textbf{Entrenamiento:} Se entrena el perceptrón con los datos de entrada y salida esperados.
+\item \textbf{Iteracion:} El proceso de entrenamiento se repite 10,000 veces para garantizar que el perceptrón tenga suficientes oportunidades para aprender la función.
+\item \textbf{Prueba:} Se prueba el perceptrón con los datos de entrada y salida esperados.
+\end{enumerate}
+
+\section{Codigo}
+\begin{minted}{rust}
+use rand::Rng;
+
+struct Perceptron {
+    weights: [f64; 2],
+    bias: f64,
+    learning_rate: f64,
+}
+
+impl Perceptron {
+    fn new() -> Self {
+        let mut rng = rand::thread_rng();
+        let weights = [rng.gen_range(-1.0..1.0), rng.gen_range(-1.0..1.0)];
+        let bias = rng.gen_range(-1.0..1.0);
+        let learning_rate = 0.01;
+
+        Perceptron {
+            weights,
+            bias,
+            learning_rate,
+        }
+    }
+
+    fn activate(&self, sum: f64) -> i32 {
+        if sum > 0.0 {
+            1
+        } else {
+            0
+        }
+    }
+
+    fn feed_forward(&self, inputs: &[i32; 2]) -> i32 {
+        let weighted_sum = (inputs[0] as f64 * self.weights[0])
+            + (inputs[1] as f64 * self.weights[1])
+            + self.bias;
+        self.activate(weighted_sum)
+    }
+
+    fn train(&mut self, inputs: &[i32; 2], target: i32) {
+        let guess = self.feed_forward(inputs);
+        let error = target - guess;
+        for i in 0..2 {
+            self.weights[i] += self.learning_rate * (error as f64) * (inputs[i] as f64);
+        }
+        self.bias += self.learning_rate * (error as f64);
+    }
+}
+
+fn main() {
+    // Perceptrón para la compuerta lógica AND
+    let mut and_perceptron = Perceptron::new();
+    let and_training_data = [
+        ([0, 0], 0),
+        ([0, 1], 0),
+        ([1, 0], 0),
+        ([1, 1], 1),
+    ];
+
+    // Entrenamiento para la compuerta lógica AND
+    for _ in 0..10000 {
+        for &(inputs, target) in &and_training_data {
+            and_perceptron.train(&inputs, target);
+        }
+    }
+
+    // Pruebas para AND
+    for &(inputs, _) in &and_training_data {
+        let result = and_perceptron.feed_forward(&inputs);
+        println!("AND {:?} -> {}", inputs, result);
+    }
+}
+\end{minted}
+\section{Resultados}
+\begin{center}
+    \includegraphics[width=0.8\textwidth]{/home/gerry/Pictures/screenshots/window/screenshot2023-10-29_18:57-09.png}
+\end{center}
+\subsection{Intento de hacer la compuerta XOR}
+\begin{center}
+    \includegraphics[width=0.8\textwidth]{/home/gerry/Pictures/screenshots/window/screenshot2023-10-29_18:12-02.png}
+\end{center}
+
+\section{Conclusion}
+\subsection{Aprendizajes}
+Se aprendieron los conceptos básicos de un perceptrón, que es la unidad fundamental de las redes neuronales artificiales.
+
+Se experimentó con la capacidad del perceptrón para aprender una función lógica simple, en este caso, las compuertas AND y XOR.
+\subsection{Implementacion del algoritmo}
+Se puede implementar un perceptrón para resolver cualquier problema de clasificación binaria.
+Sin embargo, el perceptrón no puede resolver problemas que no son linealmente separables,
+como la compuerta XOR a menos que se utilicen múltiples perceptrones.
+\subsection{Retos y dificultades}
+Sin duda el reto mas grande fue el de implementar la compuerta XOR, ya que no se podia resolver
+con un solo perceptron, lo intente implementar de diferentes maneras pero no pude resolverlo.
+
+\end{document}

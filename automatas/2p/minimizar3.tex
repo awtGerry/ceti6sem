@@ -1,0 +1,53 @@
+% \documentclass[border=0.9cm]{standalone}
+%
+% % required packages and libraries
+% \usepackage{tikz}
+% \usetikzlibrary{automata, arrows.meta, positioning}
+%
+% \begin{document}
+%
+% \begin{tikzpicture} [node distance = 3cm, on grid, auto]
+%
+% \node (a) [state, accepting, initial, initial text = {}] {$A$};
+% \node (b) [state, accepting, above right = of a] {$B$};
+% \node (c) [state, accepting, below right = of a] {$C$};
+% \node (d) [state, accepting, right = of b] {$D$};
+% \node (e) [state, right = of c] {$E$};
+%
+% \path [-stealth, thick]
+% 	(a) edge node {$0$}   (b)
+% 	(a) edge node {$1$}   (c)
+%     (b) edge[bend left] node {$1$}   (d)
+%     (b) edge [loop above] node {$0$}()
+%     (c) edge node {$0$}   (b)
+%     (c) edge node {$1$}   (e)
+%     (d) edge node {$1$}   (e)
+%     (d) edge[bend left] node {$0$}   (b)
+%     (e) edge [loop below] node {$0,1$}();
+% \end{tikzpicture}
+%
+% \end{document}
+
+
+\documentclass[border=0.9cm]{standalone}
+
+\usepackage{tikz}
+\usetikzlibrary{automata, arrows.meta, positioning}
+
+\begin{document}
+
+\begin{tikzpicture} [node distance = 3cm, on grid, auto]
+
+\node (q1) [state, accepting] {$q_1$};
+\node (q3) [state, below right = of q1] {$q_3$};
+\node (q2) [state, above right = of q3] {$q_2$};
+
+\path [-stealth, thick]
+    (q1) edge[bend left] node {$1$} (q3)
+    (q1) edge [loop above] node {$0$}()
+    (q3) edge[bend left] node {$0$} (q1)
+    (q3) edge node {$1$} (q2)
+    (q2) edge [loop above] node {$0,1$}();
+\end{tikzpicture}
+
+\end{document}

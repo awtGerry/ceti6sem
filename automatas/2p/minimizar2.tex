@@ -1,0 +1,21 @@
+\documentclass[border=0.9cm]{standalone}
+
+% required packages and libraries
+\usepackage{tikz}
+\usetikzlibrary{automata, arrows.meta, positioning}
+
+\begin{document}
+
+\begin{tikzpicture} [node distance = 3cm, on grid, auto]
+
+\node (q1) [state, accepting, initial] {$q_1$};
+\node (q2) [state, above right = of q1] {$q_2$};
+\node (q3) [state, right = of q1] {$q_3$};
+
+\path [-stealth, thick]
+	(q1) edge node {$0,1$}   (q2)
+    (q2) edge node {$0,1$}   (q3)
+    (q3) edge node {$0,1$}   (q1);
+\end{tikzpicture}
+
+\end{document}

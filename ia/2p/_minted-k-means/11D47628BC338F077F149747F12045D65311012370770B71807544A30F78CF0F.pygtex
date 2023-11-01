@@ -1,0 +1,120 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k}{use}\PYG{+w}{ }\PYG{n}{engine}::\PYG{n}{graphics}::\PYG{n}{color}::\PYG{n}{Color}\PYG{p}{;}
+\PYG{k}{use}\PYG{+w}{ }\PYG{n}{engine}::\PYG{n}{graphics}::\PYG{n}{window}::\PYG{n}{Window}\PYG{p}{;}
+\PYG{k}{use}\PYG{+w}{ }\PYG{n}{engine}::\PYG{n}{algorithms}::\PYG{n}{fill}::\PYG{n}{draw\PYGZus{}array\PYGZus{}circle}\PYG{p}{;}
+
+\PYG{k}{const}\PYG{+w}{ }\PYG{n}{WIDTH}: \PYG{k+kt}{f32} \PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mf}{800.0}\PYG{p}{;}
+\PYG{k}{const}\PYG{+w}{ }\PYG{n}{HEIGHT}: \PYG{k+kt}{f32} \PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mf}{600.0}\PYG{p}{;}
+
+\PYG{c+cp}{\PYGZsh{}[derive(Debug, Clone)]}
+\PYG{k}{struct} \PYG{n+nc}{Point}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{    }\PYG{n}{x}: \PYG{k+kt}{f32}\PYG{p}{,}
+\PYG{+w}{    }\PYG{n}{y}: \PYG{k+kt}{f32}\PYG{p}{,}
+\PYG{p}{\PYGZcb{}}
+
+\PYG{c+cp}{\PYGZsh{}[derive(Debug)]}
+\PYG{k}{struct} \PYG{n+nc}{Cluster}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{    }\PYG{n}{points}: \PYG{n+nb}{Vec}\PYG{o}{\PYGZlt{}}\PYG{n}{Point}\PYG{o}{\PYGZgt{}}\PYG{p}{,}
+\PYG{+w}{    }\PYG{n}{centroid}: \PYG{n+nc}{Point}\PYG{p}{,}
+\PYG{p}{\PYGZcb{}}
+
+\PYG{c+c1}{// Function to calculate the distance between two points}
+\PYG{c+c1}{// It will return a vector with the distance between the two points}
+\PYG{k}{fn} \PYG{n+nf}{kmeans}\PYG{p}{()}\PYG{+w}{ }\PYGZhy{}\PYGZgt{} \PYG{n+nb}{Vec}\PYG{o}{\PYGZlt{}}\PYG{p}{(}\PYG{k+kt}{f32}\PYG{p}{,}\PYG{+w}{ }\PYG{k+kt}{f32}\PYG{p}{)}\PYG{o}{\PYGZgt{}}
+\PYG{p}{\PYGZob{}}
+\PYG{+w}{    }\PYG{k+kd}{let}\PYG{+w}{ }\PYG{k}{mut}\PYG{+w}{ }\PYG{n}{points}: \PYG{n+nb}{Vec}\PYG{o}{\PYGZlt{}}\PYG{n}{Point}\PYG{o}{\PYGZgt{}}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n+nb}{Vec}::\PYG{n}{new}\PYG{p}{();}
+\PYG{+w}{    }\PYG{k+kd}{let}\PYG{+w}{ }\PYG{k}{mut}\PYG{+w}{ }\PYG{n}{clusters}: \PYG{n+nb}{Vec}\PYG{o}{\PYGZlt{}}\PYG{n}{Cluster}\PYG{o}{\PYGZgt{}}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n+nb}{Vec}::\PYG{n}{new}\PYG{p}{();}
+
+\PYG{+w}{    }\PYG{c+c1}{// Create 2000 random points}
+\PYG{+w}{    }\PYG{k}{for}\PYG{+w}{ }\PYG{n}{\PYGZus{}}\PYG{+w}{ }\PYG{k}{in}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{o}{..}\PYG{l+m+mi}{1000}
+\PYG{+w}{    }\PYG{p}{\PYGZob{}}
+\PYG{+w}{        }\PYG{k+kd}{let}\PYG{+w}{ }\PYG{n}{x}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{rand}::\PYG{n}{random}::\PYG{o}{\PYGZlt{}}\PYG{k+kt}{f32}\PYG{o}{\PYGZgt{}}\PYG{p}{()}\PYG{+w}{ }\PYG{o}{*}\PYG{+w}{ }\PYG{n}{WIDTH}\PYG{p}{;}
+\PYG{+w}{        }\PYG{k+kd}{let}\PYG{+w}{ }\PYG{n}{y}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{rand}::\PYG{n}{random}::\PYG{o}{\PYGZlt{}}\PYG{k+kt}{f32}\PYG{o}{\PYGZgt{}}\PYG{p}{()}\PYG{+w}{ }\PYG{o}{*}\PYG{+w}{ }\PYG{n}{HEIGHT}\PYG{p}{;}
+\PYG{+w}{        }\PYG{n}{points}\PYG{p}{.}\PYG{n}{push}\PYG{p}{(}\PYG{n}{Point}\PYG{+w}{ }\PYG{p}{\PYGZob{}}\PYG{+w}{ }\PYG{n}{x}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{y}\PYG{+w}{ }\PYG{p}{\PYGZcb{});}
+\PYG{+w}{    }\PYG{p}{\PYGZcb{}}
+
+\PYG{+w}{    }\PYG{c+c1}{// Create 12 random clusters}
+\PYG{+w}{    }\PYG{k}{for}\PYG{+w}{ }\PYG{n}{\PYGZus{}}\PYG{+w}{ }\PYG{k}{in}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{o}{..}\PYG{l+m+mi}{6}
+\PYG{+w}{    }\PYG{p}{\PYGZob{}}
+\PYG{+w}{        }\PYG{k+kd}{let}\PYG{+w}{ }\PYG{n}{x}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{rand}::\PYG{n}{random}::\PYG{o}{\PYGZlt{}}\PYG{k+kt}{f32}\PYG{o}{\PYGZgt{}}\PYG{p}{()}\PYG{+w}{ }\PYG{o}{*}\PYG{+w}{ }\PYG{n}{WIDTH}\PYG{p}{;}
+\PYG{+w}{        }\PYG{k+kd}{let}\PYG{+w}{ }\PYG{n}{y}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{rand}::\PYG{n}{random}::\PYG{o}{\PYGZlt{}}\PYG{k+kt}{f32}\PYG{o}{\PYGZgt{}}\PYG{p}{()}\PYG{+w}{ }\PYG{o}{*}\PYG{+w}{ }\PYG{n}{HEIGHT}\PYG{p}{;}
+\PYG{+w}{        }\PYG{n}{clusters}\PYG{p}{.}\PYG{n}{push}\PYG{p}{(}\PYG{n}{Cluster}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{            }\PYG{n}{points}: \PYG{n+nb}{Vec}::\PYG{n}{new}\PYG{p}{(),}
+\PYG{+w}{            }\PYG{n}{centroid}: \PYG{n+nc}{Point}\PYG{+w}{ }\PYG{p}{\PYGZob{}}\PYG{+w}{ }\PYG{n}{x}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{y}\PYG{+w}{ }\PYG{p}{\PYGZcb{},}
+\PYG{+w}{        }\PYG{p}{\PYGZcb{});}
+\PYG{+w}{    }\PYG{p}{\PYGZcb{}}
+
+\PYG{+w}{    }\PYG{c+c1}{// Iterate 100 times}
+\PYG{+w}{    }\PYG{k}{for}\PYG{+w}{ }\PYG{n}{\PYGZus{}}\PYG{+w}{ }\PYG{k}{in}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{o}{..}\PYG{l+m+mi}{100}
+\PYG{+w}{    }\PYG{p}{\PYGZob{}}
+\PYG{+w}{        }\PYG{c+c1}{// Assign the points}
+\PYG{+w}{        }\PYG{k}{for}\PYG{+w}{ }\PYG{n}{point}\PYG{+w}{ }\PYG{k}{in}\PYG{+w}{ }\PYG{o}{\PYGZam{}}\PYG{n}{points}
+\PYG{+w}{        }\PYG{p}{\PYGZob{}}
+\PYG{+w}{            }\PYG{k+kd}{let}\PYG{+w}{ }\PYG{k}{mut}\PYG{+w}{ }\PYG{n}{distance}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{std}::\PYG{k+kt}{f32}::\PYG{n}{MAX}\PYG{p}{;}
+\PYG{+w}{            }\PYG{k+kd}{let}\PYG{+w}{ }\PYG{k}{mut}\PYG{+w}{ }\PYG{n}{cluster\PYGZus{}id}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{p}{;}
+
+\PYG{+w}{            }\PYG{k}{for}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{id}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{cluster}\PYG{p}{)}\PYG{+w}{ }\PYG{k}{in}\PYG{+w}{ }\PYG{n}{clusters}\PYG{p}{.}\PYG{n}{iter}\PYG{p}{().}\PYG{n}{enumerate}\PYG{p}{()}
+\PYG{+w}{            }\PYG{p}{\PYGZob{}}
+\PYG{+w}{                }\PYG{k+kd}{let}\PYG{+w}{ }\PYG{n}{dx}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{point}\PYG{p}{.}\PYG{n}{x}\PYG{+w}{ }\PYG{o}{\PYGZhy{}}\PYG{+w}{ }\PYG{n}{cluster}\PYG{p}{.}\PYG{n}{centroid}\PYG{p}{.}\PYG{n}{x}\PYG{p}{;}
+\PYG{+w}{                }\PYG{k+kd}{let}\PYG{+w}{ }\PYG{n}{dy}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{point}\PYG{p}{.}\PYG{n}{y}\PYG{+w}{ }\PYG{o}{\PYGZhy{}}\PYG{+w}{ }\PYG{n}{cluster}\PYG{p}{.}\PYG{n}{centroid}\PYG{p}{.}\PYG{n}{y}\PYG{p}{;}
+\PYG{+w}{                }\PYG{k+kd}{let}\PYG{+w}{ }\PYG{n}{d}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{dx}\PYG{+w}{ }\PYG{o}{*}\PYG{+w}{ }\PYG{n}{dx}\PYG{+w}{ }\PYG{o}{+}\PYG{+w}{ }\PYG{n}{dy}\PYG{+w}{ }\PYG{o}{*}\PYG{+w}{ }\PYG{n}{dy}\PYG{p}{;}
+
+\PYG{+w}{                }\PYG{k}{if}\PYG{+w}{ }\PYG{n}{d}\PYG{+w}{ }\PYG{o}{\PYGZlt{}}\PYG{+w}{ }\PYG{n}{distance}
+\PYG{+w}{                }\PYG{p}{\PYGZob{}}
+\PYG{+w}{                    }\PYG{n}{distance}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{d}\PYG{p}{;}
+\PYG{+w}{                    }\PYG{n}{cluster\PYGZus{}id}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{id}\PYG{p}{;}
+\PYG{+w}{                }\PYG{p}{\PYGZcb{}}
+\PYG{+w}{            }\PYG{p}{\PYGZcb{}}
+
+\PYG{+w}{            }\PYG{n}{clusters}\PYG{p}{[}\PYG{n}{cluster\PYGZus{}id}\PYG{p}{].}\PYG{n}{points}\PYG{p}{.}\PYG{n}{push}\PYG{p}{(}\PYG{n}{point}\PYG{p}{.}\PYG{n}{clone}\PYG{p}{());}
+\PYG{+w}{        }\PYG{p}{\PYGZcb{}}
+
+\PYG{+w}{        }\PYG{c+c1}{// Update centroids}
+\PYG{+w}{        }\PYG{k}{for}\PYG{+w}{ }\PYG{n}{cluster}\PYG{+w}{ }\PYG{k}{in}\PYG{+w}{ }\PYG{o}{\PYGZam{}}\PYG{k}{mut}\PYG{+w}{ }\PYG{n}{clusters}
+\PYG{+w}{        }\PYG{p}{\PYGZob{}}
+\PYG{+w}{            }\PYG{k+kd}{let}\PYG{+w}{ }\PYG{k}{mut}\PYG{+w}{ }\PYG{n}{x}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mf}{0.0}\PYG{p}{;}
+\PYG{+w}{            }\PYG{k+kd}{let}\PYG{+w}{ }\PYG{k}{mut}\PYG{+w}{ }\PYG{n}{y}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mf}{0.0}\PYG{p}{;}
+
+\PYG{+w}{            }\PYG{k}{for}\PYG{+w}{ }\PYG{n}{point}\PYG{+w}{ }\PYG{k}{in}\PYG{+w}{ }\PYG{o}{\PYGZam{}}\PYG{n}{cluster}\PYG{p}{.}\PYG{n}{points}
+\PYG{+w}{            }\PYG{p}{\PYGZob{}}
+\PYG{+w}{                }\PYG{n}{x}\PYG{+w}{ }\PYG{o}{+=}\PYG{+w}{ }\PYG{n}{point}\PYG{p}{.}\PYG{n}{x}\PYG{p}{;}
+\PYG{+w}{                }\PYG{n}{y}\PYG{+w}{ }\PYG{o}{+=}\PYG{+w}{ }\PYG{n}{point}\PYG{p}{.}\PYG{n}{y}\PYG{p}{;}
+\PYG{+w}{            }\PYG{p}{\PYGZcb{}}
+
+\PYG{+w}{            }\PYG{n}{cluster}\PYG{p}{.}\PYG{n}{centroid}\PYG{p}{.}\PYG{n}{x}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{x}\PYG{+w}{ }\PYG{o}{/}\PYG{+w}{ }\PYG{n}{cluster}\PYG{p}{.}\PYG{n}{points}\PYG{p}{.}\PYG{n}{len}\PYG{p}{()}\PYG{+w}{ }\PYG{k}{as}\PYG{+w}{ }\PYG{k+kt}{f32}\PYG{p}{;}
+\PYG{+w}{            }\PYG{n}{cluster}\PYG{p}{.}\PYG{n}{centroid}\PYG{p}{.}\PYG{n}{y}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{y}\PYG{+w}{ }\PYG{o}{/}\PYG{+w}{ }\PYG{n}{cluster}\PYG{p}{.}\PYG{n}{points}\PYG{p}{.}\PYG{n}{len}\PYG{p}{()}\PYG{+w}{ }\PYG{k}{as}\PYG{+w}{ }\PYG{k+kt}{f32}\PYG{p}{;}
+\PYG{+w}{        }\PYG{p}{\PYGZcb{}}
+\PYG{+w}{    }\PYG{p}{\PYGZcb{}}
+
+\PYG{+w}{    }\PYG{k+kd}{let}\PYG{+w}{ }\PYG{k}{mut}\PYG{+w}{ }\PYG{n}{result}: \PYG{n+nb}{Vec}\PYG{o}{\PYGZlt{}}\PYG{p}{(}\PYG{k+kt}{f32}\PYG{p}{,}\PYG{+w}{ }\PYG{k+kt}{f32}\PYG{p}{)}\PYG{o}{\PYGZgt{}}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n+nb}{Vec}::\PYG{n}{new}\PYG{p}{();}
+
+\PYG{+w}{    }\PYG{k}{for}\PYG{+w}{ }\PYG{n}{cluster}\PYG{+w}{ }\PYG{k}{in}\PYG{+w}{ }\PYG{o}{\PYGZam{}}\PYG{n}{clusters}
+\PYG{+w}{    }\PYG{p}{\PYGZob{}}
+\PYG{+w}{        }\PYG{n}{result}\PYG{p}{.}\PYG{n}{push}\PYG{p}{((}\PYG{n}{cluster}\PYG{p}{.}\PYG{n}{centroid}\PYG{p}{.}\PYG{n}{x}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{cluster}\PYG{p}{.}\PYG{n}{centroid}\PYG{p}{.}\PYG{n}{y}\PYG{p}{));}
+\PYG{+w}{    }\PYG{p}{\PYGZcb{}}
+
+\PYG{+w}{    }\PYG{n}{result}
+\PYG{p}{\PYGZcb{}}
+
+\PYG{k}{fn} \PYG{n+nf}{main}\PYG{p}{()}
+\PYG{p}{\PYGZob{}}
+\PYG{+w}{    }\PYG{k+kd}{let}\PYG{+w}{ }\PYG{k}{mut}\PYG{+w}{ }\PYG{n}{window}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{Window}::\PYG{n}{new}\PYG{p}{(}\PYG{n}{WIDTH}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{HEIGHT}\PYG{p}{,}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}K\PYGZhy{}means\PYGZdq{}}\PYG{p}{);}
+\PYG{+w}{    }\PYG{n}{window}\PYG{p}{.}\PYG{n}{init}\PYG{p}{();}
+
+\PYG{+w}{    }\PYG{k}{while}\PYG{+w}{ }\PYG{o}{!}\PYG{n}{window}\PYG{p}{.}\PYG{n}{should\PYGZus{}close}\PYG{p}{()}
+\PYG{+w}{    }\PYG{p}{\PYGZob{}}
+\PYG{+w}{        }\PYG{k}{unsafe}
+\PYG{+w}{        }\PYG{p}{\PYGZob{}}
+\PYG{+w}{            }\PYG{n}{gl}::\PYG{n}{ClearColor}\PYG{p}{(}\PYG{l+m+mf}{0.0}\PYG{p}{,}\PYG{+w}{ }\PYG{l+m+mf}{0.0}\PYG{p}{,}\PYG{+w}{ }\PYG{l+m+mf}{0.0}\PYG{p}{,}\PYG{+w}{ }\PYG{l+m+mf}{1.0}\PYG{p}{);}
+\PYG{+w}{            }\PYG{c+c1}{// gl::Clear(gl::COLOR\PYGZus{}BUFFER\PYGZus{}BIT);}
+\PYG{+w}{            }\PYG{k+kd}{let}\PYG{+w}{ }\PYG{n}{v}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{kmeans}\PYG{p}{();}
+\PYG{+w}{            }\PYG{k}{for}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{x}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{y}\PYG{p}{)}\PYG{+w}{ }\PYG{k}{in}\PYG{+w}{ }\PYG{o}{\PYGZam{}}\PYG{n}{v}
+\PYG{+w}{            }\PYG{p}{\PYGZob{}}
+\PYG{+w}{                }\PYG{n}{draw\PYGZus{}array\PYGZus{}circle}\PYG{p}{(}\PYG{o}{*}\PYG{n}{x}\PYG{p}{,}\PYG{+w}{ }\PYG{o}{*}\PYG{n}{y}\PYG{p}{,}\PYG{+w}{ }\PYG{l+m+mf}{10.0}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{Color}::\PYG{n}{new}\PYG{p}{(}\PYG{l+m+mf}{1.0}\PYG{p}{,}\PYG{+w}{ }\PYG{l+m+mf}{1.0}\PYG{p}{,}\PYG{+w}{ }\PYG{l+m+mf}{1.0}\PYG{p}{,}\PYG{+w}{ }\PYG{l+m+mf}{1.0}\PYG{p}{));}
+\PYG{+w}{            }\PYG{p}{\PYGZcb{}}
+\PYG{+w}{        }\PYG{p}{\PYGZcb{}}
+\PYG{+w}{        }\PYG{n}{window}\PYG{p}{.}\PYG{n}{update}\PYG{p}{();}
+\PYG{+w}{    }\PYG{p}{\PYGZcb{}}
+
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}
