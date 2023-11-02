@@ -1,6 +1,8 @@
 *.class
 target/
 moviles/
+servicios/
+automatas/2p/
 *.zip
 *.aux
 *.latexrun.*
