@@ -15,3 +15,5 @@ automatas/2p/
 *.synctex.gz
 *.log
 ia/2p/ransomware/
+*.tex
+*.pdf
